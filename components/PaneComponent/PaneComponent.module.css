@@ -1,0 +1,33 @@
+.pane {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.commandContainer {
+  width: 100%;
+  display: flex;
+  column-gap: 5px;
+  column-width: 100%;
+}
+
+.commandInput {
+  width: 100%;
+}
+
+.buttonsContainer {
+  display: flex;
+  column-width: 100%;
+  column-gap: 5px;
+}
+
+.button {
+  width: 100%;
+}
+
+.icon {
+  pointer-events: none;
+}
