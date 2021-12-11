@@ -19,8 +19,19 @@ const WindowComponent = ({
   handleSplit: MouseEventHandler;
 }) => {
   const [panes, setPanes] = React.useState<JSX.Element[]>([]);
+  const [grid, setGrid] = React.useState<JSX.Element[]>([]);
 
   useEffect(() => {
+    console.log(panesData);
+
+    // sort panes by xCoordinate
+    const sortedPanes = panesData.sort((a, b) => a.xCoordinate - b.xCoordinate);
+
+    // sot panes by yCoordinate
+    const sortedPanesByY = sortedPanes.sort(
+      (a, b) => a.yCoordinate - b.yCoordinate
+    );
+
     setPanes(
       panesData.map((paneData) => {
         return (

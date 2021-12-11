@@ -189,6 +189,38 @@ const Main: FC = () => {
 
     console.log(newPaneX, newPaneY);
 
+    // Mover los paneles si ya existe el nuevo
+    setSessionState({
+      ...sessionState,
+      windows: sessionState.windows.map((window) => {
+        if (window.id === activeWindow.id) {
+          if (
+            window.panes.find(
+              (pane) =>
+                pane.xCoordinate === newPaneX && pane.yCoordinate === newPaneY
+            )
+          ) {
+            if (splitType === 'verticalSplit') {
+              window.panes.forEach((pane) => {
+                if (pane.xCoordinate > paneX) {
+                  pane.xCoordinate += 1;
+                }
+              });
+            } else if (splitType === 'horizontalSplit') {
+              window.panes.forEach((pane) => {
+                if (pane.yCoordinate > paneY) {
+                  pane.yCoordinate += 1;
+                }
+              });
+            }
+          }
+          return window;
+        } else {
+          return window;
+        }
+      }),
+    });
+
     setSessionState({
       ...sessionState,
       windows: sessionState.windows.map((window) => {
