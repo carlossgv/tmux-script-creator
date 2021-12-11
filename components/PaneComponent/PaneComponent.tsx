@@ -77,7 +77,7 @@ const PaneComponent = ({
           className={styles.button}
           variant="contained"
           onClick={handleSplit}
-          name="horizonalSplit"
+          name="horizontalSplit"
         >
           Split Horizontally
         </Button>

@@ -1,6 +1,11 @@
 .root {
   aspect-ratio: 16/9;
   width: 1200px;
+  max-width: 1200px;
   margin-top: 10px;
   padding: 5px;
+  size-adjust: none;
+  display: flex;
+  row-gap: 5px;
+  column-gap: 5px;
 }

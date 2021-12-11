@@ -175,7 +175,35 @@ const Main: FC = () => {
   };
 
   const splitPane = (event: any) => {
-    console.log(event);
+    const paneId = event.target.parentElement.parentElement.id;
+
+    const paneX = parseInt(paneId.split('_')[1]);
+    const paneY = parseInt(paneId.split('_')[2]);
+
+    const splitType = event.target.name;
+
+    console.log(paneX, paneY, splitType);
+
+    const newPaneX = splitType === 'verticalSplit' ? paneX + 1 : paneX;
+    const newPaneY = splitType === 'horizontalSplit' ? paneY + 1 : paneY;
+
+    console.log(newPaneX, newPaneY);
+
+    setSessionState({
+      ...sessionState,
+      windows: sessionState.windows.map((window) => {
+        if (window.id === activeWindow.id) {
+          window.panes.push({
+            commands: [''],
+            xCoordinate: newPaneX,
+            yCoordinate: newPaneY,
+          });
+          return window;
+        } else {
+          return window;
+        }
+      }),
+    });
   };
 
   return (
