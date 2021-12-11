@@ -38,7 +38,6 @@ const Main: FC = () => {
   );
 
   useEffect(() => {
-    console.log(sessionState.windows);
     setWindowsState(sessionState.windows.map((window) => window.name));
   }, [sessionState.windows]);
 
@@ -73,7 +72,7 @@ const Main: FC = () => {
 
     setSessionState({
       ...sessionState,
-      windows: sessionState.windows.filter((window, i) => i !== index),
+      windows: sessionState.windows.filter((_window, i) => i !== index),
     });
   };
 
@@ -93,31 +92,84 @@ const Main: FC = () => {
   };
 
   const addCommand = (event: any) => {
-    const index = parseInt(
-      event.target.parentElement.parentElement.parentElement.id.split('_')[2]
-    );
-
-    console.log(event.target.parentElement.parentElement.parentElement);
-
-    const paneId = event.target.parentElement.parentElement.id;
+    const paneId = event.target.parentElement.parentElement.parentElement.id;
 
     const paneX = parseInt(paneId.split('_')[1]);
     const paneY = parseInt(paneId.split('_')[2]);
 
-    // setSessionState({
-    //   ...sessionState,
-    //   windows: sessionState.windows.map((window, i) => {
-    //     if (window === activeWindow) {
-    //       window.panes.map((pane) => {
-    //         if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
-    //           pane.commands.push('');
-    //         }
-    //       });
-    //     }
-    //   }),
-    // });
+    setSessionState({
+      ...sessionState,
+      windows: sessionState.windows.map((window) => {
+        if (window === activeWindow) {
+          window.panes.map((pane) => {
+            if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
+              pane.commands.push('');
+            }
+          });
+          return window;
+        } else {
+          return window;
+        }
+      }),
+    });
+  };
 
-    console.log(sessionState);
+  const removeCommand = (event: any) => {
+    const paneId = event.target.parentElement.parentElement.parentElement.id;
+
+    const paneX = parseInt(paneId.split('_')[1]);
+    const paneY = parseInt(paneId.split('_')[2]);
+
+    const commandId = parseInt(event.target.parentElement.id.split('_')[1]);
+
+    setSessionState({
+      ...sessionState,
+      windows: sessionState.windows.map((window) => {
+        if (window === activeWindow) {
+          window.panes.forEach((pane) => {
+            if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
+              if (pane.commands.length === 1) {
+                return;
+              }
+              pane.commands.splice(commandId, 1);
+            }
+          });
+          return window;
+        } else {
+          return window;
+        }
+      }),
+    });
+  };
+
+  const updateCommand = (event: any) => {
+    const paneId =
+      event.target.parentElement.parentElement.parentElement.parentElement
+        .parentElement.id;
+
+    const paneX = parseInt(paneId.split('_')[1]);
+    const paneY = parseInt(paneId.split('_')[2]);
+
+    const commandId = parseInt(
+      event.target.parentElement.parentElement.parentElement.id.split('_')[1]
+    );
+
+    setSessionState({
+      ...sessionState,
+      windows: sessionState.windows.map((window) => {
+        if (window === activeWindow) {
+          window.panes.forEach((pane) => {
+            if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
+              console.log(pane.commands[commandId]);
+              pane.commands[commandId] = event.target.value;
+            }
+          });
+          return window;
+        } else {
+          return window;
+        }
+      }),
+    });
   };
 
   return (
@@ -140,7 +192,9 @@ const Main: FC = () => {
       <div className={styles.creationContainer}>
         <WindowComponent
           panesData={activeWindow.panes}
-          handleAddCommandToPane={addCommand}
+          handleAddCommand={addCommand}
+          handleRemoveCommand={removeCommand}
+          handleUpdateCommand={updateCommand}
         />
         <ResultScript session={sessionState} />
       </div>

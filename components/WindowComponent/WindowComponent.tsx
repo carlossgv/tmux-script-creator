@@ -1,5 +1,5 @@
 import { Paper } from '@mui/material';
-import React, { MouseEventHandler, useEffect } from 'react';
+import React, { ChangeEventHandler, MouseEventHandler, useEffect } from 'react';
 import { useState } from 'react';
 import { Pane } from '../Main/Main';
 import PaneComponent from '../PaneComponent/PaneComponent';
@@ -7,10 +7,14 @@ import styles from './WindowComponent.module.css';
 
 const WindowComponent = ({
   panesData,
-  handleAddCommandToPane,
+  handleAddCommand,
+  handleRemoveCommand,
+  handleUpdateCommand,
 }: {
   panesData: Array<Pane>;
-  handleAddCommandToPane: MouseEventHandler;
+  handleAddCommand: MouseEventHandler;
+  handleRemoveCommand: MouseEventHandler;
+  handleUpdateCommand: ChangeEventHandler;
 }) => {
   const [panes, setPanes] = React.useState<JSX.Element[]>([]);
 
@@ -21,12 +25,14 @@ const WindowComponent = ({
           <PaneComponent
             key={`${paneData.xCoordinate}_${paneData.yCoordinate}`}
             paneData={paneData}
-            handleAddCommand={handleAddCommandToPane}
+            handleAddCommand={handleAddCommand}
+            handleRemoveCommand={handleRemoveCommand}
+            handleUpdateCommand={handleUpdateCommand}
           />
         );
       })
     );
-  }, [handleAddCommandToPane, panesData]);
+  }, [handleAddCommand, handleRemoveCommand, handleUpdateCommand, panesData]);
 
   return (
     <Paper elevation={8} className={styles.root}>

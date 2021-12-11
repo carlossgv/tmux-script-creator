@@ -7,11 +7,17 @@
   padding: 5px;
 }
 
-.commandContainer {
+.commandsContainer {
   width: 100%;
   display: flex;
-  column-gap: 5px;
+  flex-direction: column;
+  row-gap: 5px;
   column-width: 100%;
+}
+
+.command {
+  display: flex;
+  column-gap: 2px;
 }
 
 .commandInput {

@@ -1,5 +1,5 @@
 import { Button, Paper, TextField } from '@mui/material';
-import React, { MouseEventHandler, useEffect } from 'react';
+import React, { ChangeEventHandler, MouseEventHandler, useEffect } from 'react';
 import { Pane } from '../Main/Main';
 import styles from './PaneComponent.module.css';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -8,9 +8,13 @@ import AddIcon from '@mui/icons-material/Add';
 const PaneComponent = ({
   paneData,
   handleAddCommand,
+  handleRemoveCommand,
+  handleUpdateCommand,
 }: {
   paneData: Pane;
   handleAddCommand: MouseEventHandler;
+  handleRemoveCommand: MouseEventHandler;
+  handleUpdateCommand: ChangeEventHandler;
 }) => {
   const [commands, setCommands] = React.useState<string[]>(paneData.commands);
   const [commandsComponent, setCommandsComponent] = React.useState<
@@ -20,11 +24,12 @@ const PaneComponent = ({
   useEffect(() => {
     setCommandsComponent(
       paneData.commands.map((command, index) => (
-        <div key={index} className={styles.commandContainer}>
+        <div key={index} className={styles.command} id={`command_${index}`}>
           <TextField
-            label={`Command ${index + 1}`}
+            label={`Command #${index + 1}`}
             value={command}
             className={styles.commandInput}
+            onChange={handleUpdateCommand}
           />
           <Button
             variant="contained"
@@ -34,20 +39,29 @@ const PaneComponent = ({
           >
             <AddIcon className={styles.icon} />
           </Button>
-          <Button variant="contained" className={styles.commandButton}>
+          <Button
+            variant="contained"
+            className={styles.commandButton}
+            onClick={handleRemoveCommand}
+          >
             <ClearIcon className={styles.icon} />
           </Button>
         </div>
       ))
     );
-  }, [paneData.commands, handleAddCommand]);
+  }, [
+    paneData.commands,
+    handleAddCommand,
+    handleRemoveCommand,
+    handleUpdateCommand,
+  ]);
 
   return (
     <Paper
       className={styles.pane}
       id={`pane_${paneData.xCoordinate}_${paneData.yCoordinate}`}
     >
-      {commandsComponent}
+      <div className={styles.commandsContainer}>{commandsComponent}</div>
       <div className={styles.buttonsContainer}>
         <Button className={styles.button} variant="contained">
           Split Vertically
