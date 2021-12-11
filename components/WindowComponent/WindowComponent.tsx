@@ -10,11 +10,13 @@ const WindowComponent = ({
   handleAddCommand,
   handleRemoveCommand,
   handleUpdateCommand,
+  handleSplit,
 }: {
   panesData: Array<Pane>;
   handleAddCommand: MouseEventHandler;
   handleRemoveCommand: MouseEventHandler;
   handleUpdateCommand: ChangeEventHandler;
+  handleSplit: MouseEventHandler;
 }) => {
   const [panes, setPanes] = React.useState<JSX.Element[]>([]);
 
@@ -28,11 +30,18 @@ const WindowComponent = ({
             handleAddCommand={handleAddCommand}
             handleRemoveCommand={handleRemoveCommand}
             handleUpdateCommand={handleUpdateCommand}
+            handleSplit={handleSplit}
           />
         );
       })
     );
-  }, [handleAddCommand, handleRemoveCommand, handleUpdateCommand, panesData]);
+  }, [
+    handleAddCommand,
+    handleRemoveCommand,
+    handleSplit,
+    handleUpdateCommand,
+    panesData,
+  ]);
 
   return (
     <Paper elevation={8} className={styles.root}>

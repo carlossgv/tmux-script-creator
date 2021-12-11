@@ -8,6 +8,7 @@ import WindowComponent from '../WindowComponent/WindowComponent';
 import styles from './Main.module.css';
 
 type Window = {
+  id: number;
   name: string;
   panes: Pane[];
 };
@@ -23,6 +24,7 @@ const Main: FC = () => {
     name: '',
     windows: [
       {
+        id: 0,
         name: 'window 0',
         panes: [{ commands: [''], xCoordinate: 0, yCoordinate: 0 }],
       },
@@ -56,8 +58,9 @@ const Main: FC = () => {
       windows: [
         ...sessionState.windows,
         {
+          id: sessionState.windows.length,
           name: `window ${sessionState.windows.length}`,
-          panes: [{ commands: [], xCoordinate: 0, yCoordinate: 0 }],
+          panes: [{ commands: [''], xCoordinate: 0, yCoordinate: 0 }],
         },
       ],
     });
@@ -100,7 +103,7 @@ const Main: FC = () => {
     setSessionState({
       ...sessionState,
       windows: sessionState.windows.map((window) => {
-        if (window === activeWindow) {
+        if (window.id === activeWindow.id) {
           window.panes.map((pane) => {
             if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
               pane.commands.push('');
@@ -125,7 +128,7 @@ const Main: FC = () => {
     setSessionState({
       ...sessionState,
       windows: sessionState.windows.map((window) => {
-        if (window === activeWindow) {
+        if (window.id === activeWindow.id) {
           window.panes.forEach((pane) => {
             if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
               if (pane.commands.length === 1) {
@@ -157,10 +160,9 @@ const Main: FC = () => {
     setSessionState({
       ...sessionState,
       windows: sessionState.windows.map((window) => {
-        if (window === activeWindow) {
+        if (window.id === activeWindow.id) {
           window.panes.forEach((pane) => {
             if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
-              console.log(pane.commands[commandId]);
               pane.commands[commandId] = event.target.value;
             }
           });
@@ -170,6 +172,10 @@ const Main: FC = () => {
         }
       }),
     });
+  };
+
+  const splitPane = (event: any) => {
+    console.log(event);
   };
 
   return (
@@ -195,6 +201,7 @@ const Main: FC = () => {
           handleAddCommand={addCommand}
           handleRemoveCommand={removeCommand}
           handleUpdateCommand={updateCommand}
+          handleSplit={splitPane}
         />
         <ResultScript session={sessionState} />
       </div>
