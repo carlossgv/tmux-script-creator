@@ -1,0 +1,11 @@
+.main {
+  margin-top: 20px;
+}
+
+.mainInfo {
+  display: flex;
+}
+
+.creationContainer {
+  display: flex;
+}

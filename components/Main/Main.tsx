@@ -1,13 +1,17 @@
-import { TextField } from '@mui/material';
+import { Paper, TextField } from '@mui/material';
 import React from 'react';
 import { FC } from 'react';
+import ResultScript from '../ResultScript/ResultScript';
+import WindowButtonPad from '../WindowButtonPad/WindowButtonPad';
+import WindowComponent from '../WindowComponent/WindowComponent';
+import styles from './Main.module.css';
 
 type Window = {
   name: string;
   panes: Pane[];
 };
 
-type Pane = {
+export type Pane = {
   commands: string[];
 };
 
@@ -25,16 +29,22 @@ const Main: FC = () => {
   };
 
   return (
-    <>
-      <div>
+    <Paper className={styles.main}>
+      <div className={styles.mainInfo}>
         <TextField
           type="text"
           label="Session Name"
+          name="name"
           onChange={handleChange}
           required
         />
+        <WindowButtonPad />
       </div>
-    </>
+      <div className={styles.creationContainer}>
+        <WindowComponent />
+        <ResultScript session={sessionState} />
+      </div>
+    </Paper>
   );
 };
 
