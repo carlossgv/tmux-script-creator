@@ -1,5 +1,5 @@
 import { Paper, TextField } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FC } from 'react';
 import ResultScript from '../ResultScript/ResultScript';
 import WindowButtonPad from '../WindowButtonPad/WindowButtonPad';
@@ -18,8 +18,16 @@ export type Pane = {
 const Main: FC = () => {
   const [sessionState, setSessionState] = React.useState({
     name: '',
-    windows: [{ name: '', panes: [{ commands: [] }] }],
+    windows: [{ name: 'window 0', panes: [{ commands: [] }] }],
   });
+
+  const [windowsState, setWindowsState] = React.useState<string[]>(
+    sessionState.windows.map((window) => window.name)
+  );
+
+  useEffect(() => {
+    setWindowsState(sessionState.windows.map((window) => window.name));
+  }, [sessionState]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSessionState({
@@ -38,10 +46,10 @@ const Main: FC = () => {
           onChange={handleChange}
           required
         />
-        <WindowButtonPad />
+        <WindowButtonPad buttonsData={windowsState} />
       </div>
       <div className={styles.creationContainer}>
-        <WindowComponent />
+        {/* <WindowComponent /> */}
         <ResultScript session={sessionState} />
       </div>
     </Paper>
