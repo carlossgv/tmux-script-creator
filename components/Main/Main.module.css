@@ -5,8 +5,10 @@
 
 .mainInfo {
   display: flex;
+  margin-bottom: 10px;
 }
 
 .creationContainer {
   display: flex;
+  justify-content: space-between;
 }

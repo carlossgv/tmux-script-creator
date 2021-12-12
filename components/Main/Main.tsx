@@ -21,6 +21,11 @@ export type Pane = {
   height: number;
 };
 
+export type Session = {
+  name: string;
+  windows: Window[];
+};
+
 const Main: FC = () => {
   const [sessionState, setSessionState] = React.useState({
     name: '',
@@ -256,6 +261,7 @@ const Main: FC = () => {
     });
 
     // change width and heigh of remainder panes
+    // TODO: proper split implementation in extreme cases
     setSessionState({
       ...sessionState,
       windows: sessionState.windows.map((window) => {

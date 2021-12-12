@@ -2,7 +2,8 @@
   aspect-ratio: 16/9;
   width: 1200px;
   max-width: 1200px;
-  margin-top: 10px;
+  min-width: 1000px;
+
   padding: 5px;
   size-adjust: none;
   display: grid;
