@@ -32,6 +32,7 @@ const PaneComponent = ({
             onKeyDown={(e) => {
               e.key === 'Enter' ? console.log('I need to fix this!') : null;
             }}
+            size="small"
           />
           <Button
             variant="contained"

@@ -255,8 +255,13 @@ const Main: FC = () => {
             name="name"
             onChange={handleChangeSessionName}
             required
+            size="small"
           />
-          <Select onChange={updateLayout} value={activeWindow.layout}>
+          <Select
+            onChange={updateLayout}
+            value={activeWindow.layout}
+            size="small"
+          >
             {Object.values(Layout).map((l) => {
               return (
                 <MenuItem key={l} value={l}>

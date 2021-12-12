@@ -22,8 +22,13 @@ const WindowButton = ({
         onChange={handleChange}
         onFocus={handleChange}
         required
+        size="small"
       />
-      <Button variant="outlined" onClick={handleOnClick}>
+      <Button
+        variant="outlined"
+        onClick={handleOnClick}
+        style={{ height: '100%' }}
+      >
         Remove window
       </Button>
     </div>
