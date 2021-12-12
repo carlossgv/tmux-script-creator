@@ -33,7 +33,7 @@ export type Pane = {
   yCoordinate: number;
   width: number;
   height: number;
-  finalCommand?: string;
+  finalCommands?: string[];
 };
 
 export type Session = {
@@ -75,6 +75,8 @@ const Main: FC = () => {
     setWindowsState(sessionState.windows.map((window) => window.name));
   }, [sessionState.windows]);
 
+  useEffect(() => {}, [activeWindow]);
+
   const handleChangeSessionName = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -105,6 +107,10 @@ const Main: FC = () => {
         },
       ],
     });
+  };
+
+  const updateActiveWindow = (index: number) => {
+    setActiveWindow(sessionState.windows[index]);
   };
 
   const removeWindow = (event: any) => {

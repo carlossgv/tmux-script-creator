@@ -29,10 +29,13 @@ const buildBody = (windows: Window[]): string => {
         pane.commands.forEach((command) => {
           body += `  tmux send-keys -t '${windows[0].name}' '${command}' C-m\n`;
         });
-
-        if (pane.finalCommand) {
-          body += `  tmux ${pane.finalCommand}\n\n`;
+        console.log(pane);
+        if (pane.finalCommands) {
+          pane.finalCommands.forEach((command) => {
+            body += `  tmux ${command}\n`;
+          });
         }
+        body += '\n';
       });
     } else {
       body += `  tmux new-window -t $SESSION:${index} -n '${window.name}'\n`;
@@ -41,9 +44,12 @@ const buildBody = (windows: Window[]): string => {
           body += `  tmux send-keys -t '${window.name}' '${command}' C-m\n`;
         });
 
-        if (pane.finalCommand) {
-          body += `  tmux ${pane.finalCommand}\n`;
+        if (pane.finalCommands) {
+          pane.finalCommands.forEach((command) => {
+            body += `  tmux ${command}\n`;
+          });
         }
+        body += '\n';
       });
     }
     body += '\n';
