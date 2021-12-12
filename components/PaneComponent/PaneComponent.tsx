@@ -10,13 +10,11 @@ const PaneComponent = ({
   handleAddCommand,
   handleRemoveCommand,
   handleUpdateCommand,
-  handleSplit,
 }: {
   paneData: Pane;
   handleAddCommand: MouseEventHandler;
   handleRemoveCommand: MouseEventHandler;
   handleUpdateCommand: ChangeEventHandler;
-  handleSplit: MouseEventHandler;
 }) => {
   const [commands, setCommands] = React.useState<string[]>(paneData.commands);
   const [commandsComponent, setCommandsComponent] = React.useState<
@@ -65,29 +63,10 @@ const PaneComponent = ({
       style={{
         gridColumnStart: paneData.xCoordinate + 1,
         gridRowStart: paneData.yCoordinate + 1,
-        gridColumnEnd: paneData.xCoordinate + 1 + paneData.width,
-        gridRowEnd: paneData.yCoordinate + 1 + paneData.height,
+        gridColumnEnd: paneData.xCoordinate + 1,
       }}
     >
       <div className={styles.commandsContainer}>{commandsComponent}</div>
-      <div className={styles.buttonsContainer}>
-        <Button
-          className={styles.button}
-          variant="contained"
-          onClick={handleSplit}
-          name="verticalSplit"
-        >
-          Split Vertically
-        </Button>
-        <Button
-          className={styles.button}
-          variant="contained"
-          onClick={handleSplit}
-          name="horizontalSplit"
-        >
-          Split Horizontally
-        </Button>
-      </div>
     </Paper>
   );
 };

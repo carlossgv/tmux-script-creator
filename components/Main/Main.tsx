@@ -1,4 +1,4 @@
-import { Paper, TextField } from '@mui/material';
+import { MenuItem, Paper, Select, TextField } from '@mui/material';
 import { connect } from 'http2';
 import React, { useEffect } from 'react';
 import { FC } from 'react';
@@ -11,14 +11,25 @@ type Window = {
   id: number;
   name: string;
   panes: Pane[];
+  layout: Layout;
 };
+
+export enum Layout {
+  Pane1 = 'One Panel',
+  Pane2V = 'Two Panes Vertical',
+  Pane2H = 'Two Panes Horizontal',
+  Pane3V = 'Three Panes Vertical',
+  Pane3V12 = 'Three Panes V: 1V + 2H',
+  Pane3V21 = 'Three Panes V: 2H + 1V',
+  Pane3H21 = 'Three Panes H: 2H + 1V',
+  Pane3H12 = 'Three Panes H: 1V + 2H',
+  Pane4 = 'Four Panes',
+}
 
 export type Pane = {
   commands: string[];
   xCoordinate: number;
   yCoordinate: number;
-  width: number;
-  height: number;
 };
 
 export type Session = {
@@ -39,10 +50,9 @@ const Main: FC = () => {
             commands: [''],
             xCoordinate: 0,
             yCoordinate: 0,
-            width: 1,
-            height: 1,
           },
         ],
+        layout: Layout.Pane1,
       },
     ],
   });
@@ -81,10 +91,9 @@ const Main: FC = () => {
               commands: [''],
               xCoordinate: 0,
               yCoordinate: 0,
-              width: 1,
-              height: 1,
             },
           ],
+          layout: Layout.Pane1,
         },
       ],
     });
@@ -198,96 +207,12 @@ const Main: FC = () => {
     });
   };
 
-  const splitPane = (event: any) => {
-    const paneId = event.target.parentElement.parentElement.id;
-
-    const paneX = parseInt(paneId.split('_')[1]);
-    const paneY = parseInt(paneId.split('_')[2]);
-
-    const splitType = event.target.name;
-
-    const newPaneX = splitType === 'verticalSplit' ? paneX + 1 : paneX;
-    const newPaneY = splitType === 'horizontalSplit' ? paneY + 1 : paneY;
-
-    // Mover los paneles si ya existe el nuevo
+  const updateLayout = (event: any) => {
     setSessionState({
       ...sessionState,
-      windows: sessionState.windows.map((window) => {
+      windows: sessionState.windows.map((window, i) => {
         if (window.id === activeWindow.id) {
-          if (
-            window.panes.find(
-              (pane) =>
-                pane.xCoordinate === newPaneX && pane.yCoordinate === newPaneY
-            )
-          ) {
-            if (splitType === 'verticalSplit') {
-              window.panes.forEach((pane) => {
-                if (pane.xCoordinate > paneX) {
-                  pane.xCoordinate += 1;
-                }
-              });
-            } else if (splitType === 'horizontalSplit') {
-              window.panes.forEach((pane) => {
-                if (pane.yCoordinate > paneY) {
-                  pane.yCoordinate += 1;
-                }
-              });
-            }
-          }
-          return window;
-        } else {
-          return window;
-        }
-      }),
-    });
-
-    // create new panel
-    setSessionState({
-      ...sessionState,
-      windows: sessionState.windows.map((window) => {
-        if (window.id === activeWindow.id) {
-          window.panes.push({
-            commands: [''],
-            xCoordinate: newPaneX,
-            yCoordinate: newPaneY,
-            width: 1,
-            height: 1,
-          });
-          return window;
-        } else {
-          return window;
-        }
-      }),
-    });
-
-    // change width and heigh of remainder panes
-    // TODO: proper split implementation in extreme cases
-    setSessionState({
-      ...sessionState,
-      windows: sessionState.windows.map((window) => {
-        if (window.id === activeWindow.id) {
-          window.panes.forEach((pane) => {
-            if (
-              (pane.xCoordinate !== paneX && pane.yCoordinate !== paneY) ||
-              (pane.xCoordinate !== newPaneX && pane.yCoordinate !== newPaneY)
-            ) {
-              pane.height =
-                splitType === 'verticalSplit' ? pane.height : pane.height * 2;
-              pane.width =
-                splitType === 'horizontalSplit' ? pane.width : pane.width * 2;
-            } else {
-              const newSplitHeight =
-                pane.height === 1 ? pane.height : pane.height / 2;
-
-              const newSplitWidth =
-                pane.width === 1 ? pane.width : pane.width / 2;
-
-              pane.height =
-                splitType === 'verticalSplit' ? newSplitHeight : pane.height;
-              pane.width =
-                splitType === 'horizontalSplit' ? newSplitWidth : pane.width;
-            }
-          });
+          window.layout = event.target.value;
           return window;
         } else {
           return window;
@@ -299,13 +224,24 @@ const Main: FC = () => {
   return (
     <Paper className={styles.main}>
       <div className={styles.mainInfo}>
-        <TextField
-          type="text"
-          label="Session Name"
-          name="name"
-          onChange={handleChangeSessionName}
-          required
-        />
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <TextField
+            type="text"
+            label="Session Name"
+            name="name"
+            onChange={handleChangeSessionName}
+            required
+          />
+          <Select onChange={updateLayout} value={activeWindow.layout}>
+            {Object.values(Layout).map((l) => {
+              return (
+                <MenuItem key={l} value={l}>
+                  {l}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </div>
         <WindowButtonPad
           buttonsData={windowsState}
           handleClick={addNewWindow}
@@ -319,7 +255,7 @@ const Main: FC = () => {
           handleAddCommand={addCommand}
           handleRemoveCommand={removeCommand}
           handleUpdateCommand={updateCommand}
-          handleSplit={splitPane}
+          layout={activeWindow.layout}
         />
         <ResultScript session={sessionState} />
       </div>

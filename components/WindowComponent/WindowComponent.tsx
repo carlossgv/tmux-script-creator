@@ -1,13 +1,37 @@
 import { Paper } from '@mui/material';
 import React, { ChangeEventHandler, MouseEventHandler, useEffect } from 'react';
 import { useState } from 'react';
-import { Pane } from '../Main/Main';
+import { Layout, Pane } from '../Main/Main';
 import PaneComponent from '../PaneComponent/PaneComponent';
 import styles from './WindowComponent.module.css';
 
-type Coordinates = {
-  x: number;
-  y: number;
+type Divisions = {
+  columns: number;
+  rows: number;
+};
+
+const createGrid = (layout: Layout): Divisions => {
+  let divisions: Divisions = {} as Divisions;
+  console.log(layout);
+  switch (layout) {
+    case Layout.Pane1:
+      divisions = { columns: 1, rows: 1 };
+      break;
+    case Layout.Pane2V:
+      divisions = { columns: 2, rows: 1 };
+      break;
+    case Layout.Pane2H:
+      divisions = { columns: 1, rows: 2 };
+      break;
+    case Layout.Pane3V:
+      divisions = { columns: 3, rows: 1 };
+      break;
+    default:
+      divisions = { columns: 2, rows: 2 };
+      break;
+  }
+
+  return divisions;
 };
 
 const WindowComponent = ({
@@ -15,40 +39,25 @@ const WindowComponent = ({
   handleAddCommand,
   handleRemoveCommand,
   handleUpdateCommand,
-  handleSplit,
+  layout,
 }: {
   panesData: Array<Pane>;
   handleAddCommand: MouseEventHandler;
   handleRemoveCommand: MouseEventHandler;
   handleUpdateCommand: ChangeEventHandler;
-  handleSplit: MouseEventHandler;
+  layout: Layout;
 }) => {
   const [panes, setPanes] = React.useState<JSX.Element[]>([]);
   const [grid, setGrid] = React.useState<JSX.Element[]>([]);
-  const [maxCoordinates, setMaxCoordinates] = React.useState<Coordinates>({
-    x: 0,
-    y: 0,
+  const [divisions, setDivisions] = React.useState<Divisions>({
+    columns: 1,
+    rows: 1,
   });
 
   useEffect(() => {
-    // sort panes by xCoordinate
-    let sortedPanes = panesData.sort((a, b) => a.xCoordinate - b.xCoordinate);
-    // get max x coordinate
-    let maxX = sortedPanes[sortedPanes.length - 1].xCoordinate;
+    setDivisions(createGrid(layout));
 
-    // sort panes by yCoordinate
-    sortedPanes = sortedPanes.sort((a, b) => a.yCoordinate - b.yCoordinate);
-    // get max y coordinate
-    let maxY = sortedPanes[sortedPanes.length - 1].yCoordinate;
-
-    console.log('maxX: ' + (maxX + 1));
-    console.log('maxY: ' + (maxY + 1));
-
-    setMaxCoordinates({ x: maxX, y: maxY });
-
-    const busyCoordinates: Array<Coordinates> = [];
-
-    console.log(panesData);
+    console.log(divisions);
 
     setPanes(
       panesData.map((paneData) => {
@@ -59,7 +68,6 @@ const WindowComponent = ({
             handleAddCommand={handleAddCommand}
             handleRemoveCommand={handleRemoveCommand}
             handleUpdateCommand={handleUpdateCommand}
-            handleSplit={handleSplit}
           />
         );
       })
@@ -67,9 +75,9 @@ const WindowComponent = ({
   }, [
     handleAddCommand,
     handleRemoveCommand,
-    handleSplit,
     handleUpdateCommand,
     panesData,
+    layout,
   ]);
 
   return (
@@ -77,8 +85,8 @@ const WindowComponent = ({
       elevation={8}
       className={styles.root}
       style={{
-        gridTemplateColumns: `repeat(${maxCoordinates.x + 1}, 1fr)`,
-        gridTemplateRows: `repeat(${maxCoordinates.y + 1}, 1fr)`,
+        gridTemplateColumns: `repeat(${divisions.columns}, 1fr)`,
+        gridTemplateRows: `repeat(${divisions.rows}, 1fr)`,
       }}
     >
       {panes}
