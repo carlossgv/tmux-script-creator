@@ -5,6 +5,7 @@
   padding: 5px;
   row-gap: 5px;
   width: 100%;
+  max-width: 600px;
 }
 
 .buttonContainer {

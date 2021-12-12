@@ -17,7 +17,7 @@ const ResultScript = ({ session }: { session: Session }) => {
 
   return (
     <Paper elevation={8} className={styles.root}>
-      <TextareaAutosize value={script} minRows={45} />
+      <TextareaAutosize value={script} minRows={45} maxRows={45} />
       <div className={styles.buttonContainer}>
         <Button
           variant="contained"
