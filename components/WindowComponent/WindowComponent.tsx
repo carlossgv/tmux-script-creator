@@ -12,7 +12,6 @@ type Divisions = {
 
 const createGrid = (layout: Layout): Divisions => {
   let divisions: Divisions = {} as Divisions;
-  console.log(layout);
   switch (layout) {
     case Layout.Pane1:
       divisions = { columns: 1, rows: 1 };
@@ -48,7 +47,6 @@ const WindowComponent = ({
   layout: Layout;
 }) => {
   const [panes, setPanes] = React.useState<JSX.Element[]>([]);
-  const [grid, setGrid] = React.useState<JSX.Element[]>([]);
   const [divisions, setDivisions] = React.useState<Divisions>({
     columns: 1,
     rows: 1,
@@ -56,8 +54,6 @@ const WindowComponent = ({
 
   useEffect(() => {
     setDivisions(createGrid(layout));
-
-    console.log(divisions);
 
     setPanes(
       panesData.map((paneData) => {

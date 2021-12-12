@@ -6,6 +6,7 @@ import ResultScript from '../ResultScript/ResultScript';
 import WindowButtonPad from '../WindowButtonPad/WindowButtonPad';
 import WindowComponent from '../WindowComponent/WindowComponent';
 import styles from './Main.module.css';
+import { createPanes } from './panesUtils';
 
 type Window = {
   id: number;
@@ -19,10 +20,10 @@ export enum Layout {
   Pane2V = 'Two Panes Vertical',
   Pane2H = 'Two Panes Horizontal',
   Pane3V = 'Three Panes Vertical',
-  Pane3V12 = 'Three Panes V: 1V + 2H',
-  Pane3V21 = 'Three Panes V: 2H + 1V',
-  Pane3H21 = 'Three Panes H: 2H + 1V',
-  Pane3H12 = 'Three Panes H: 1V + 2H',
+  Pane3V12 = 'Three Panes V: 1-2',
+  Pane3V21 = 'Three Panes V: 2-1',
+  Pane3H12 = 'Three Panes H: 1-2',
+  Pane3H21 = 'Three Panes H: 2-1',
   Pane4 = 'Four Panes',
 }
 
@@ -30,6 +31,8 @@ export type Pane = {
   commands: string[];
   xCoordinate: number;
   yCoordinate: number;
+  width: number;
+  height: number;
 };
 
 export type Session = {
@@ -50,6 +53,8 @@ const Main: FC = () => {
             commands: [''],
             xCoordinate: 0,
             yCoordinate: 0,
+            width: 1,
+            height: 1,
           },
         ],
         layout: Layout.Pane1,
@@ -91,6 +96,8 @@ const Main: FC = () => {
               commands: [''],
               xCoordinate: 0,
               yCoordinate: 0,
+              width: 1,
+              height: 1,
             },
           ],
           layout: Layout.Pane1,
@@ -213,6 +220,11 @@ const Main: FC = () => {
       windows: sessionState.windows.map((window, i) => {
         if (window.id === activeWindow.id) {
           window.layout = event.target.value;
+
+          const panes = createPanes(window.layout);
+
+          window.panes = panes;
+
           return window;
         } else {
           return window;
