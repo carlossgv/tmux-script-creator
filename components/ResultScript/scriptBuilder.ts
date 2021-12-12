@@ -24,30 +24,31 @@ const buildBody = (windows: Window[]): string => {
   let body = '';
   windows.forEach((window, index) => {
     if (index === 0) {
-      body += `tmux rename-window -t 0 '${window.name}'\n`;
+      body += `  tmux rename-window -t 0 '${window.name}'\n`;
       window.panes.forEach((pane) => {
         pane.commands.forEach((command) => {
-          body += `tmux send-keys -t '${windows[0].name}' '${command}' C-m\n`;
+          body += `  tmux send-keys -t '${windows[0].name}' '${command}' C-m\n`;
         });
 
         if (pane.finalCommand) {
-          body += `tmux ${pane.finalCommand}\n\n`;
+          body += `  tmux ${pane.finalCommand}\n\n`;
         }
       });
     } else {
-      body += `tmux new-window -t $SESSION:${index} -n '${window.name}'\n`;
+      body += `  tmux new-window -t $SESSION:${index} -n '${window.name}'\n`;
       window.panes.forEach((pane) => {
         pane.commands.forEach((command) => {
-          body += `tmux send-keys -t '${window.name}' '${command}' C-m\n`;
+          body += `  tmux send-keys -t '${window.name}' '${command}' C-m\n`;
         });
 
         if (pane.finalCommand) {
-          body += `tmux ${pane.finalCommand}\n`;
+          body += `  tmux ${pane.finalCommand}\n`;
         }
       });
     }
     body += '\n';
   });
+  body += 'fi\n\n';
 
   return body;
 };
