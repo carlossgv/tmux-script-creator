@@ -29,7 +29,6 @@ const buildBody = (windows: Window[]): string => {
         pane.commands.forEach((command) => {
           body += `  tmux send-keys -t '${windows[0].name}' '${command}' C-m\n`;
         });
-        console.log(pane);
         if (pane.finalCommands) {
           pane.finalCommands.forEach((command) => {
             body += `  tmux ${command}\n`;
