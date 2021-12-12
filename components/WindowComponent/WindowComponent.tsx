@@ -5,6 +5,11 @@ import { Pane } from '../Main/Main';
 import PaneComponent from '../PaneComponent/PaneComponent';
 import styles from './WindowComponent.module.css';
 
+type Coordinates = {
+  x: number;
+  y: number;
+};
+
 const WindowComponent = ({
   panesData,
   handleAddCommand,
@@ -20,17 +25,28 @@ const WindowComponent = ({
 }) => {
   const [panes, setPanes] = React.useState<JSX.Element[]>([]);
   const [grid, setGrid] = React.useState<JSX.Element[]>([]);
+  const [maxCoordinates, setMaxCoordinates] = React.useState<Coordinates>({
+    x: 0,
+    y: 0,
+  });
 
   useEffect(() => {
-    console.log(panesData);
-
     // sort panes by xCoordinate
-    const sortedPanes = panesData.sort((a, b) => a.xCoordinate - b.xCoordinate);
+    let sortedPanes = panesData.sort((a, b) => a.xCoordinate - b.xCoordinate);
+    // get max x coordinate
+    let maxX = sortedPanes[sortedPanes.length - 1].xCoordinate;
 
-    // sot panes by yCoordinate
-    const sortedPanesByY = sortedPanes.sort(
-      (a, b) => a.yCoordinate - b.yCoordinate
-    );
+    // sort panes by yCoordinate
+    sortedPanes = sortedPanes.sort((a, b) => a.yCoordinate - b.yCoordinate);
+    // get max y coordinate
+    let maxY = sortedPanes[sortedPanes.length - 1].yCoordinate;
+
+    console.log(maxX, maxY);
+    setMaxCoordinates({ x: maxX, y: maxY });
+
+    const busyCoordinates: Array<Coordinates> = [];
+
+    console.log(panesData);
 
     setPanes(
       panesData.map((paneData) => {
@@ -55,7 +71,14 @@ const WindowComponent = ({
   ]);
 
   return (
-    <Paper elevation={8} className={styles.root}>
+    <Paper
+      elevation={8}
+      className={styles.root}
+      style={{
+        gridTemplateColumns: `repeat(${maxCoordinates.x + 1}, 1fr)`,
+        gridTemplateRows: `repeat(${maxCoordinates.y + 1}, 1fr)`,
+      }}
+    >
       {panes}
     </Paper>
   );

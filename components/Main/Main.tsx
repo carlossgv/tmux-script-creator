@@ -17,6 +17,8 @@ export type Pane = {
   commands: string[];
   xCoordinate: number;
   yCoordinate: number;
+  width: number;
+  height: number;
 };
 
 const Main: FC = () => {
@@ -25,8 +27,17 @@ const Main: FC = () => {
     windows: [
       {
         id: 0,
+
         name: 'window 0',
-        panes: [{ commands: [''], xCoordinate: 0, yCoordinate: 0 }],
+        panes: [
+          {
+            commands: [''],
+            xCoordinate: 0,
+            yCoordinate: 0,
+            width: 1,
+            height: 1,
+          },
+        ],
       },
     ],
   });
@@ -60,7 +71,15 @@ const Main: FC = () => {
         {
           id: sessionState.windows.length,
           name: `window ${sessionState.windows.length}`,
-          panes: [{ commands: [''], xCoordinate: 0, yCoordinate: 0 }],
+          panes: [
+            {
+              commands: [''],
+              xCoordinate: 0,
+              yCoordinate: 0,
+              width: 1,
+              height: 1,
+            },
+          ],
         },
       ],
     });
@@ -182,12 +201,8 @@ const Main: FC = () => {
 
     const splitType = event.target.name;
 
-    console.log(paneX, paneY, splitType);
-
     const newPaneX = splitType === 'verticalSplit' ? paneX + 1 : paneX;
     const newPaneY = splitType === 'horizontalSplit' ? paneY + 1 : paneY;
-
-    console.log(newPaneX, newPaneY);
 
     // Mover los paneles si ya existe el nuevo
     setSessionState({
@@ -229,6 +244,8 @@ const Main: FC = () => {
             commands: [''],
             xCoordinate: newPaneX,
             yCoordinate: newPaneY,
+            width: 1,
+            height: 1,
           });
           return window;
         } else {
