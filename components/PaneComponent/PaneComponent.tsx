@@ -16,7 +16,6 @@ const PaneComponent = ({
   handleRemoveCommand: MouseEventHandler;
   handleUpdateCommand: ChangeEventHandler;
 }) => {
-  const [commands, setCommands] = React.useState<string[]>(paneData.commands);
   const [commandsComponent, setCommandsComponent] = React.useState<
     JSX.Element[]
   >([]);
@@ -30,6 +29,9 @@ const PaneComponent = ({
             value={command}
             className={styles.commandInput}
             onChange={handleUpdateCommand}
+            onKeyDown={(e) => {
+              e.key === 'Enter' ? console.log('I need to fix this!') : null;
+            }}
           />
           <Button
             variant="contained"

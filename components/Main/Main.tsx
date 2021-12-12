@@ -8,7 +8,7 @@ import WindowComponent from '../WindowComponent/WindowComponent';
 import styles from './Main.module.css';
 import { createPanes } from './panesUtils';
 
-type Window = {
+export type Window = {
   id: number;
   name: string;
   panes: Pane[];
@@ -33,6 +33,7 @@ export type Pane = {
   yCoordinate: number;
   width: number;
   height: number;
+  finalCommand?: string;
 };
 
 export type Session = {
@@ -135,10 +136,14 @@ const Main: FC = () => {
   };
 
   const addCommand = (event: any) => {
+    // TODO: fix insert command in the middle of the list
+    // TODO: enter key should also add a new command
     const paneId = event.target.parentElement.parentElement.parentElement.id;
 
     const paneX = parseInt(paneId.split('_')[1]);
     const paneY = parseInt(paneId.split('_')[2]);
+
+    console.log(paneX, paneY, paneId);
 
     setSessionState({
       ...sessionState,

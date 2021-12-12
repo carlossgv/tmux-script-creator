@@ -20,6 +20,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         yCoordinate: 0,
         width: 1,
         height: 1,
+        finalCommand: 'splitw -h',
       });
       panes.push({
         commands: [''],
