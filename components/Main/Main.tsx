@@ -75,8 +75,6 @@ const Main: FC = () => {
     setWindowsState(sessionState.windows.map((window) => window.name));
   }, [sessionState.windows]);
 
-  useEffect(() => {}, [activeWindow]);
-
   const handleChangeSessionName = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -87,30 +85,27 @@ const Main: FC = () => {
   };
 
   const addNewWindow = () => {
-    setSessionState({
-      ...sessionState,
-      windows: [
-        ...sessionState.windows,
+    const newWindow: Window = {
+      id: sessionState.windows.length,
+      name: `window ${sessionState.windows.length}`,
+      panes: [
         {
-          id: sessionState.windows.length,
-          name: `window ${sessionState.windows.length}`,
-          panes: [
-            {
-              commands: [''],
-              xCoordinate: 0,
-              yCoordinate: 0,
-              width: 1,
-              height: 1,
-            },
-          ],
-          layout: Layout.Pane1,
+          commands: [''],
+          xCoordinate: 0,
+          yCoordinate: 0,
+          width: 1,
+          height: 1,
         },
       ],
-    });
-  };
+      layout: Layout.Pane1,
+    };
 
-  const updateActiveWindow = (index: number) => {
-    setActiveWindow(sessionState.windows[index]);
+    setSessionState({
+      ...sessionState,
+      windows: [...sessionState.windows, newWindow],
+    });
+
+    setActiveWindow(newWindow);
   };
 
   const removeWindow = (event: any) => {
@@ -148,8 +143,6 @@ const Main: FC = () => {
 
     const paneX = parseInt(paneId.split('_')[1]);
     const paneY = parseInt(paneId.split('_')[2]);
-
-    console.log(paneX, paneY, paneId);
 
     setSessionState({
       ...sessionState,
@@ -226,23 +219,31 @@ const Main: FC = () => {
   };
 
   const updateLayout = (event: any) => {
+    console.log(activeWindow.name);
+
+    const newWindows: Window[] = sessionState.windows.map((window) => {
+      if (window.id === activeWindow.id) {
+        window.layout = event.target.value;
+
+        const panes = createPanes(window.layout);
+
+        window.panes = panes;
+
+        return window;
+      } else {
+        return window;
+      }
+    });
+
     setSessionState({
       ...sessionState,
-      windows: sessionState.windows.map((window, i) => {
-        if (window.id === activeWindow.id) {
-          window.layout = event.target.value;
-
-          const panes = createPanes(window.layout);
-
-          window.panes = panes;
-
-          return window;
-        } else {
-          return window;
-        }
-      }),
+      windows: newWindows,
     });
   };
+
+  useEffect(() => {
+    console.log(1);
+  }, [sessionState.windows]);
 
   return (
     <Paper className={styles.main}>
