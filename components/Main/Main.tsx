@@ -236,6 +236,7 @@ const Main: FC = () => {
       }),
     });
 
+    // create new panel
     setSessionState({
       ...sessionState,
       windows: sessionState.windows.map((window) => {
@@ -246,6 +247,40 @@ const Main: FC = () => {
             yCoordinate: newPaneY,
             width: 1,
             height: 1,
+          });
+          return window;
+        } else {
+          return window;
+        }
+      }),
+    });
+
+    // change width and heigh of remainder panes
+    setSessionState({
+      ...sessionState,
+      windows: sessionState.windows.map((window) => {
+        if (window.id === activeWindow.id) {
+          window.panes.forEach((pane) => {
+            if (
+              (pane.xCoordinate !== paneX && pane.yCoordinate !== paneY) ||
+              (pane.xCoordinate !== newPaneX && pane.yCoordinate !== newPaneY)
+            ) {
+              pane.height =
+                splitType === 'verticalSplit' ? pane.height : pane.height * 2;
+              pane.width =
+                splitType === 'horizontalSplit' ? pane.width : pane.width * 2;
+            } else {
+              const newSplitHeight =
+                pane.height === 1 ? pane.height : pane.height / 2;
+
+              const newSplitWidth =
+                pane.width === 1 ? pane.width : pane.width / 2;
+
+              pane.height =
+                splitType === 'verticalSplit' ? newSplitHeight : pane.height;
+              pane.width =
+                splitType === 'horizontalSplit' ? newSplitWidth : pane.width;
+            }
           });
           return window;
         } else {

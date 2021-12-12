@@ -41,7 +41,9 @@ const WindowComponent = ({
     // get max y coordinate
     let maxY = sortedPanes[sortedPanes.length - 1].yCoordinate;
 
-    console.log(maxX, maxY);
+    console.log('maxX: ' + (maxX + 1));
+    console.log('maxY: ' + (maxY + 1));
+
     setMaxCoordinates({ x: maxX, y: maxY });
 
     const busyCoordinates: Array<Coordinates> = [];

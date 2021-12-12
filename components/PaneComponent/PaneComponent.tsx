@@ -62,6 +62,12 @@ const PaneComponent = ({
     <Paper
       className={styles.pane}
       id={`pane_${paneData.xCoordinate}_${paneData.yCoordinate}`}
+      style={{
+        gridColumnStart: paneData.xCoordinate + 1,
+        gridRowStart: paneData.yCoordinate + 1,
+        gridColumnEnd: paneData.xCoordinate + 1 + paneData.width,
+        gridRowEnd: paneData.yCoordinate + 1 + paneData.height,
+      }}
     >
       <div className={styles.commandsContainer}>{commandsComponent}</div>
       <div className={styles.buttonsContainer}>
