@@ -48,7 +48,7 @@ const buildBody = (windows: Window[]): string => {
             body += `  tmux ${command}\n`;
           });
         }
-        body += '\n';
+        body += '  tmux select-pane -t 0\n';
       });
     }
     body += '\n';
