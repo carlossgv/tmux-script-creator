@@ -1,0 +1,2 @@
+1. Make session name required
+2. Implemente beign able to add a command in the middle of the list with the plus button
