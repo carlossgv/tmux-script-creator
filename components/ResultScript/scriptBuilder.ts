@@ -37,7 +37,7 @@ const buildBody = (windows: Window[]): string => {
         body += '\n';
       });
     } else {
-      body += `  tmux new-window -t $SESSION:${index} -n '${window.name}'\n`;
+      body += `  tmux new-window -t "$SESSION":${index} -n '${window.name}'\n`;
       window.panes.forEach((pane) => {
         pane.commands.forEach((command) => {
           body += `  tmux send-keys -t '${window.name}' '${command}' C-m\n`;
@@ -59,5 +59,5 @@ const buildBody = (windows: Window[]): string => {
 };
 
 const buildFooter = (): string => {
-  return `tmux attach-se\n`;
+  return `tmux attach-session -t "$SESSION":0\n`;
 };
