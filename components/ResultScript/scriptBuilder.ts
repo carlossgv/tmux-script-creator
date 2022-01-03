@@ -15,7 +15,7 @@ const buildHeader = (sessionName: string): string => {
   header += `SESSION="${sessionName}"\n`;
   header += `SESSIONEXISTS=$(tmux list-sessions | grep -w "$SESSION")\n\n`;
   header += `if [ "$SESSIONEXISTS" = "" ]\nthen\n\n`;
-  header += `  tmux new-session -d -s "$SESSION"\n\n`;
+  header += `  tmux new-session -d -s "$SESSION" -d -x "$(tput cols)" -y "$(tput lines)"\n\n`;
 
   return header;
 };
