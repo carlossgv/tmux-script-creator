@@ -3,3 +3,4 @@
 3. Check main card top margin
 4. Implement night mode
 5. Try to make panes sizes dinamically (best option: dragable, another option: set percentage of size in a field)
+6. Download button for the script
