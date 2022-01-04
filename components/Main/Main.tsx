@@ -144,13 +144,15 @@ const Main: FC = () => {
     const paneX = parseInt(paneId.split('_')[1]);
     const paneY = parseInt(paneId.split('_')[2]);
 
+    const commandId = parseInt(event.target.parentElement.id.split('_')[1]);
+
     setSessionState({
       ...sessionState,
       windows: sessionState.windows.map((window) => {
         if (window.id === activeWindow.id) {
           window.panes.map((pane) => {
             if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
-              pane.commands.push('');
+              pane.commands.splice(commandId + 1, 0, '');
             }
           });
           return window;
@@ -240,10 +242,6 @@ const Main: FC = () => {
       windows: newWindows,
     });
   };
-
-  useEffect(() => {
-    console.log(1);
-  }, [sessionState.windows]);
 
   return (
     <Paper className={styles.main}>
