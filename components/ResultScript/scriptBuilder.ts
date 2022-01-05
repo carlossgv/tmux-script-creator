@@ -34,7 +34,7 @@ const buildBody = (windows: Window[]): string => {
             body += `  tmux ${command}\n`;
           });
         }
-        body += '  tmux select-pane -t 0\n';
+        body += '\n';
       });
     } else {
       body += `  tmux new-window -t "$SESSION":${index} -n '${window.name}'\n`;
