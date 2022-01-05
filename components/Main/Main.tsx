@@ -47,7 +47,6 @@ const Main: FC = () => {
     windows: [
       {
         id: 0,
-
         name: 'window 0',
         panes: [
           {
@@ -100,6 +99,8 @@ const Main: FC = () => {
       layout: Layout.Pane1,
     };
 
+    sessionState.windows.forEach((window, index) => (window.id = index));
+
     setSessionState({
       ...sessionState,
       windows: [...sessionState.windows, newWindow],
@@ -137,7 +138,6 @@ const Main: FC = () => {
   };
 
   const addCommand = (event: any) => {
-    // TODO: fix insert command in the middle of the list
     // TODO: enter key should also add a new command
     const paneId = event.target.parentElement.parentElement.parentElement.id;
 
@@ -231,6 +231,8 @@ const Main: FC = () => {
 
         window.panes = panes;
 
+        setActiveWindow(window);
+
         return window;
       } else {
         return window;
@@ -270,10 +272,11 @@ const Main: FC = () => {
           </Select>
         </div>
         <WindowButtonPad
-          buttonsData={windowsState}
+          buttonsData={sessionState.windows}
           handleClick={addNewWindow}
           handleRemoveWindow={removeWindow}
           handleRenameWindow={renameWindow}
+          activeWindow={activeWindow.id}
         />
       </div>
       <div className={styles.creationContainer}>

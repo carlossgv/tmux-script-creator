@@ -6,6 +6,7 @@ import React, {
   useEffect,
 } from 'react';
 import { useState } from 'react';
+import { Window } from '../Main/Main';
 import WindowButton from '../WindowButton/WindowButton';
 
 const WindowButtonPad = ({
@@ -13,8 +14,10 @@ const WindowButtonPad = ({
   handleClick,
   handleRemoveWindow,
   handleRenameWindow,
+  activeWindow,
 }: {
-  buttonsData: Array<string>;
+  buttonsData: Array<Window>;
+  activeWindow: number;
   handleClick: MouseEventHandler;
   handleRemoveWindow: MouseEventHandler;
   handleRenameWindow: ChangeEventHandler;
@@ -23,17 +26,18 @@ const WindowButtonPad = ({
 
   useEffect(() => {
     setButtons(
-      buttonsData.map((button, index) => (
+      buttonsData.map((window, index) => (
         <WindowButton
           index={index}
           key={index}
-          name={button}
+          name={window.name}
           handleOnClick={handleRemoveWindow}
           handleChange={handleRenameWindow}
+          isActive={activeWindow === window.id}
         />
       ))
     );
-  }, [buttonsData, handleRemoveWindow, handleRenameWindow]);
+  }, [activeWindow, buttonsData, handleRemoveWindow, handleRenameWindow]);
 
   return (
     <>
