@@ -11,10 +11,6 @@ const ResultScript = ({ session }: { session: Session }) => {
   const [script, setScript] = React.useState<string>(welcomeScript);
 
   const handleBuildScript = () => {
-    if (session.name === '') {
-      alert('Session name is required');
-      return;
-    }
     const newScript = buildScript(session);
     setScript(newScript);
   };
