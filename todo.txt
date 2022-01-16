@@ -1,8 +1,8 @@
-1. Make commands a textarea 
-2. Implemente beign able to add a command in the middle of the list with the plus button
+1. Persist session (cookies?)
+2. Panes styling to be "terminal like"
 3. Check main card top margin
-4. Implement night mode
+4. Implement night mode (make it dark by default)
 5. Try to make panes sizes dinamically (best option: dragable, another option: set percentage of size in a field)
 6. Download button for the script
-7. create a way to know which window is selected (maybe change colors of fields)
+7. Style selected window
 8. Make it look like a terminal

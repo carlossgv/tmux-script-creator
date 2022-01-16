@@ -6,7 +6,7 @@ export const createPanes = (layout: Layout): Pane[] => {
   switch (layout) {
     case Layout.Pane1:
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 0,
         yCoordinate: 0,
         width: 1,
@@ -15,7 +15,7 @@ export const createPanes = (layout: Layout): Pane[] => {
       break;
     case Layout.Pane2V:
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 0,
         yCoordinate: 0,
         width: 1,
@@ -23,7 +23,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         finalCommands: ['splitw -h'],
       });
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 1,
         yCoordinate: 0,
         width: 1,
@@ -32,7 +32,7 @@ export const createPanes = (layout: Layout): Pane[] => {
       break;
     case Layout.Pane2H:
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 0,
         yCoordinate: 0,
         width: 1,
@@ -40,7 +40,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         finalCommands: ['splitw -v'],
       });
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 0,
         yCoordinate: 1,
         width: 1,
@@ -49,7 +49,7 @@ export const createPanes = (layout: Layout): Pane[] => {
       break;
     case Layout.Pane3V:
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 0,
         yCoordinate: 0,
         width: 1,
@@ -57,7 +57,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         finalCommands: ['splitw -h'],
       });
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 1,
         yCoordinate: 0,
         width: 1,
@@ -65,7 +65,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         finalCommands: ['splitw -h'],
       });
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 2,
         yCoordinate: 0,
         width: 1,
@@ -75,7 +75,7 @@ export const createPanes = (layout: Layout): Pane[] => {
       break;
     case Layout.Pane3V12:
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 0,
         yCoordinate: 0,
         width: 1,
@@ -83,7 +83,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         finalCommands: ['splitw -h'],
       });
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 1,
         yCoordinate: 0,
         width: 1,
@@ -91,7 +91,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         finalCommands: ['splitw -v'],
       });
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 1,
         yCoordinate: 1,
         width: 1,
@@ -100,7 +100,7 @@ export const createPanes = (layout: Layout): Pane[] => {
       break;
     case Layout.Pane3V21:
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 0,
         yCoordinate: 0,
         width: 1,
@@ -108,7 +108,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         finalCommands: ['splitw -h'],
       });
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 1,
         yCoordinate: 0,
         width: 1,
@@ -116,7 +116,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         finalCommands: ['select-pane -t 0', 'splitw -v'],
       });
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 0,
         yCoordinate: 1,
         width: 1,
@@ -125,7 +125,7 @@ export const createPanes = (layout: Layout): Pane[] => {
       break;
     case Layout.Pane3H21:
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 0,
         yCoordinate: 0,
         width: 1,
@@ -133,7 +133,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         finalCommands: ['splitw -v'],
       });
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 0,
         yCoordinate: 1,
         width: 2,
@@ -141,7 +141,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         finalCommands: ['select-pane -t 0', 'splitw -h'],
       });
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 1,
         yCoordinate: 0,
         width: 2,
@@ -151,7 +151,7 @@ export const createPanes = (layout: Layout): Pane[] => {
       break;
     case Layout.Pane3H12:
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 0,
         yCoordinate: 0,
         width: 2,
@@ -159,7 +159,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         finalCommands: ['splitw -v'],
       });
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 0,
         yCoordinate: 1,
         width: 1,
@@ -167,7 +167,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         finalCommands: ['splitw -h'],
       });
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 1,
         yCoordinate: 1,
         width: 1,
@@ -176,7 +176,7 @@ export const createPanes = (layout: Layout): Pane[] => {
       break;
     case Layout.Pane4:
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 0,
         yCoordinate: 0,
         width: 1,
@@ -184,7 +184,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         finalCommands: ['splitw -h'],
       });
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 1,
         yCoordinate: 0,
         width: 1,
@@ -192,7 +192,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         finalCommands: ['splitw -v'],
       });
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 1,
         yCoordinate: 1,
         width: 1,
@@ -200,7 +200,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         finalCommands: ['select-pane -t 0', 'splitw -v'],
       });
       panes.push({
-        commands: [''],
+        commands: '',
         xCoordinate: 0,
         yCoordinate: 1,
         width: 1,
