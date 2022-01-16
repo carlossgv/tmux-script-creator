@@ -140,7 +140,7 @@ const Main: FC = () => {
 
   const updateCommands = (event: any) => {
     const paneId =
-      event.target.parentElement.parentElement.parentElement
+      event.target.parentElement.parentElement
         .parentElement.id;
 
     const paneX = parseInt(paneId.split('_')[1]);

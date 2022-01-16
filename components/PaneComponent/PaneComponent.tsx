@@ -22,15 +22,13 @@ const PaneComponent = ({
         gridRowEnd: paneData.yCoordinate + 1 + paneData.height,
       }}
     >
-      <div className={styles.commandsContainer}></div>
-      <div className={styles.command} id={`commands_${paneData.xCoordinate}_${paneData.yCoordinate}`}>
-        <TextField
-          multiline
-          value={paneData.commands}
-          className={styles.commandInput}
-          onChange={handleUpdateCommands}
-        />
-      </div >
+      <TextField
+        id={`commands_${paneData.xCoordinate}_${paneData.yCoordinate}`}
+        multiline
+        value={paneData.commands}
+        className={styles.commandInput}
+        onChange={handleUpdateCommands}
+      />
     </Paper>
   );
 };
