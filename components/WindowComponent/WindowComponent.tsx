@@ -35,15 +35,11 @@ const createGrid = (layout: Layout): Divisions => {
 
 const WindowComponent = ({
   panesData,
-  handleAddCommand,
-  handleRemoveCommand,
-  handleUpdateCommand,
+  handleUpdateCommands,
   layout,
 }: {
   panesData: Array<Pane>;
-  handleAddCommand: MouseEventHandler;
-  handleRemoveCommand: MouseEventHandler;
-  handleUpdateCommand: ChangeEventHandler;
+  handleUpdateCommands: ChangeEventHandler;
   layout: Layout;
 }) => {
   const [panes, setPanes] = React.useState<JSX.Element[]>([]);
@@ -61,17 +57,13 @@ const WindowComponent = ({
           <PaneComponent
             key={`${paneData.xCoordinate}_${paneData.yCoordinate}`}
             paneData={paneData}
-            handleAddCommand={handleAddCommand}
-            handleRemoveCommand={handleRemoveCommand}
-            handleUpdateCommand={handleUpdateCommand}
+            handleUpdateCommands={handleUpdateCommands}
           />
         );
       })
     );
   }, [
-    handleAddCommand,
-    handleRemoveCommand,
-    handleUpdateCommand,
+    handleUpdateCommands,
     panesData,
     layout,
   ]);

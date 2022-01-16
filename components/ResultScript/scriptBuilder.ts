@@ -26,7 +26,9 @@ const buildBody = (windows: Window[]): string => {
     if (index === 0) {
       body += `  tmux rename-window -t 0 '${window.name}'\n`;
       window.panes.forEach((pane) => {
-        pane.commands.forEach((command) => {
+        const commandsList = pane.commands.split(/\r?\n/)
+
+        commandsList.forEach((command) => {
           body += `  tmux send-keys -t '${windows[0].name}' '${command}' C-m\n`;
         });
         if (pane.finalCommands) {
@@ -39,7 +41,8 @@ const buildBody = (windows: Window[]): string => {
     } else {
       body += `  tmux new-window -t "$SESSION":${index} -n '${window.name}'\n`;
       window.panes.forEach((pane) => {
-        pane.commands.forEach((command) => {
+        const commandsList = pane.commands.split(/\r?\n/)
+        commandsList.forEach((command) => {
           body += `  tmux send-keys -t '${window.name}' '${command}' C-m\n`;
         });
 

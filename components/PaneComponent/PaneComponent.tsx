@@ -1,63 +1,15 @@
-import { Button, Paper, TextField } from '@mui/material';
-import React, { ChangeEventHandler, MouseEventHandler, useEffect } from 'react';
+import { Paper, TextField } from '@mui/material';
+import React, { ChangeEventHandler } from 'react';
 import { Pane } from '../Main/Main';
 import styles from './PaneComponent.module.css';
-import ClearIcon from '@mui/icons-material/Clear';
-import AddIcon from '@mui/icons-material/Add';
 
 const PaneComponent = ({
   paneData,
-  handleAddCommand,
-  handleRemoveCommand,
-  handleUpdateCommand,
+  handleUpdateCommands,
 }: {
   paneData: Pane;
-  handleAddCommand: MouseEventHandler;
-  handleRemoveCommand: MouseEventHandler;
-  handleUpdateCommand: ChangeEventHandler;
+  handleUpdateCommands: ChangeEventHandler;
 }) => {
-  const [commandsComponent, setCommandsComponent] = React.useState<
-    JSX.Element[]
-  >([]);
-
-  useEffect(() => {
-    setCommandsComponent(
-      paneData.commands.map((command, index) => (
-        <div key={index} className={styles.command} id={`command_${index}`}>
-          <TextField
-            label={`Command #${index + 1}`}
-            value={command}
-            className={styles.commandInput}
-            onChange={handleUpdateCommand}
-            onKeyDown={(e) => {
-              e.key === 'Enter' ? console.log('I need to fix this!') : null;
-            }}
-            size="small"
-          />
-          <Button
-            variant="contained"
-            className={styles.commandButton}
-            onClick={handleAddCommand}
-            name="addButton"
-          >
-            <AddIcon className={styles.icon} />
-          </Button>
-          <Button
-            variant="contained"
-            className={styles.commandButton}
-            onClick={handleRemoveCommand}
-          >
-            <ClearIcon className={styles.icon} />
-          </Button>
-        </div>
-      ))
-    );
-  }, [
-    paneData.commands,
-    handleAddCommand,
-    handleRemoveCommand,
-    handleUpdateCommand,
-  ]);
 
   return (
     <Paper
@@ -70,7 +22,15 @@ const PaneComponent = ({
         gridRowEnd: paneData.yCoordinate + 1 + paneData.height,
       }}
     >
-      <div className={styles.commandsContainer}>{commandsComponent}</div>
+      <div className={styles.commandsContainer}></div>
+      <div className={styles.command} id={`commands_${paneData.xCoordinate}_${paneData.yCoordinate}`}>
+        <TextField
+          multiline
+          value={paneData.commands}
+          className={styles.commandInput}
+          onChange={handleUpdateCommands}
+        />
+      </div >
     </Paper>
   );
 };

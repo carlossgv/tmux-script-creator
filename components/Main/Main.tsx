@@ -28,7 +28,7 @@ export enum Layout {
 }
 
 export type Pane = {
-  commands: string[];
+  commands: string;
   xCoordinate: number;
   yCoordinate: number;
   width: number;
@@ -50,7 +50,7 @@ const Main: FC = () => {
         name: 'window 0',
         panes: [
           {
-            commands: [''],
+            commands: '',
             xCoordinate: 0,
             yCoordinate: 0,
             width: 1,
@@ -89,7 +89,7 @@ const Main: FC = () => {
       name: `window ${sessionState.windows.length}`,
       panes: [
         {
-          commands: [''],
+          commands: '',
           xCoordinate: 0,
           yCoordinate: 0,
           width: 1,
@@ -137,79 +137,22 @@ const Main: FC = () => {
     setActiveWindow(sessionState.windows[index]);
   };
 
-  const addCommand = (event: any) => {
-    // TODO: enter key should also add a new command
-    const paneId = event.target.parentElement.parentElement.parentElement.id;
 
-    const paneX = parseInt(paneId.split('_')[1]);
-    const paneY = parseInt(paneId.split('_')[2]);
-
-    const commandId = parseInt(event.target.parentElement.id.split('_')[1]);
-
-    setSessionState({
-      ...sessionState,
-      windows: sessionState.windows.map((window) => {
-        if (window.id === activeWindow.id) {
-          window.panes.map((pane) => {
-            if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
-              pane.commands.splice(commandId + 1, 0, '');
-            }
-          });
-          return window;
-        } else {
-          return window;
-        }
-      }),
-    });
-  };
-
-  const removeCommand = (event: any) => {
-    const paneId = event.target.parentElement.parentElement.parentElement.id;
-
-    const paneX = parseInt(paneId.split('_')[1]);
-    const paneY = parseInt(paneId.split('_')[2]);
-
-    const commandId = parseInt(event.target.parentElement.id.split('_')[1]);
-
-    setSessionState({
-      ...sessionState,
-      windows: sessionState.windows.map((window) => {
-        if (window.id === activeWindow.id) {
-          window.panes.forEach((pane) => {
-            if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
-              if (pane.commands.length === 1) {
-                return;
-              }
-              pane.commands.splice(commandId, 1);
-            }
-          });
-          return window;
-        } else {
-          return window;
-        }
-      }),
-    });
-  };
-
-  const updateCommand = (event: any) => {
+  const updateCommands = (event: any) => {
     const paneId =
-      event.target.parentElement.parentElement.parentElement.parentElement
+      event.target.parentElement.parentElement.parentElement
         .parentElement.id;
 
     const paneX = parseInt(paneId.split('_')[1]);
     const paneY = parseInt(paneId.split('_')[2]);
 
-    const commandId = parseInt(
-      event.target.parentElement.parentElement.parentElement.id.split('_')[1]
-    );
-
     setSessionState({
       ...sessionState,
       windows: sessionState.windows.map((window) => {
         if (window.id === activeWindow.id) {
           window.panes.forEach((pane) => {
             if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
-              pane.commands[commandId] = event.target.value;
+              pane.commands = event.target.value;
             }
           });
           return window;
@@ -221,8 +164,6 @@ const Main: FC = () => {
   };
 
   const updateLayout = (event: any) => {
-    console.log(activeWindow.name);
-
     const newWindows: Window[] = sessionState.windows.map((window) => {
       if (window.id === activeWindow.id) {
         window.layout = event.target.value;
@@ -282,9 +223,7 @@ const Main: FC = () => {
       <div className={styles.creationContainer}>
         <WindowComponent
           panesData={activeWindow.panes}
-          handleAddCommand={addCommand}
-          handleRemoveCommand={removeCommand}
-          handleUpdateCommand={updateCommand}
+          handleUpdateCommands={updateCommands}
           layout={activeWindow.layout}
         />
         <ResultScript session={sessionState} />

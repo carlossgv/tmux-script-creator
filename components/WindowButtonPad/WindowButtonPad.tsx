@@ -1,11 +1,9 @@
 import { Button } from '@mui/material';
 import React, {
   ChangeEventHandler,
-  FC,
   MouseEventHandler,
   useEffect,
 } from 'react';
-import { useState } from 'react';
 import { Window } from '../Main/Main';
 import WindowButton from '../WindowButton/WindowButton';
 
