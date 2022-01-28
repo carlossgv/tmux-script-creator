@@ -26,33 +26,34 @@ const buildBody = (windows: Window[]): string => {
     if (index === 0) {
       body += `  tmux rename-window -t 0 '${window.name}'\n`;
       window.panes.forEach((pane) => {
-        const commandsList = pane.commands.split(/\r?\n/)
+        const commandsList = pane.commands.split(/\r?\n/);
 
         commandsList.forEach((command) => {
           body += `  tmux send-keys -t '${windows[0].name}' '${command}' C-m\n`;
         });
-        if (pane.finalCommands) {
+        if (pane.finalCommands && pane.finalCommands.length > 0) {
           pane.finalCommands.forEach((command) => {
             body += `  tmux ${command}\n`;
           });
         }
         body += '\n';
       });
+      body += `  tmux select-pane -t 0\n`;
     } else {
       body += `  tmux new-window -t "$SESSION":${index} -n '${window.name}'\n`;
       window.panes.forEach((pane) => {
-        const commandsList = pane.commands.split(/\r?\n/)
+        const commandsList = pane.commands.split(/\r?\n/);
         commandsList.forEach((command) => {
           body += `  tmux send-keys -t '${window.name}' '${command}' C-m\n`;
         });
 
-        if (pane.finalCommands) {
+        if (pane.finalCommands && pane.finalCommands.length > 0) {
           pane.finalCommands.forEach((command) => {
             body += `  tmux ${command}\n`;
           });
         }
-        body += '  tmux select-pane -t 0\n';
       });
+      body += `  tmux select-pane -t 0\n`;
     }
     body += '\n';
   });
