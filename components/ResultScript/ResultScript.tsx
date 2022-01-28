@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 
-import { Button, Paper, TextareaAutosize } from '@mui/material';
+import { Button, Paper, TextareaAutosize, TextField } from '@mui/material';
 import React, { useEffect } from 'react';
 import { welcomeScript } from '../../welcomeScript';
 import { Session } from '../Main/Main';
@@ -21,7 +21,7 @@ const ResultScript = ({ session }: { session: Session }) => {
 
   return (
     <Paper elevation={8} className={styles.root}>
-      <TextareaAutosize value={script} minRows={45} maxRows={45} />
+      <TextField multiline value={script} minRows={45} maxRows={45} />
       <div className={styles.buttonContainer}>
         <Button
           variant="contained"

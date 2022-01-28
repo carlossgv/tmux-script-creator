@@ -10,10 +10,8 @@ const PaneComponent = ({
   paneData: Pane;
   handleUpdateCommands: ChangeEventHandler;
 }) => {
-
   return (
-    <Paper
-      className={styles.pane}
+    <TextField
       id={`pane_${paneData.xCoordinate}_${paneData.yCoordinate}`}
       style={{
         gridColumnStart: paneData.xCoordinate + 1,
@@ -21,15 +19,11 @@ const PaneComponent = ({
         gridColumnEnd: paneData.xCoordinate + 1 + paneData.width,
         gridRowEnd: paneData.yCoordinate + 1 + paneData.height,
       }}
-    >
-      <TextField
-        id={`commands_${paneData.xCoordinate}_${paneData.yCoordinate}`}
-        multiline
-        value={paneData.commands}
-        className={styles.commandInput}
-        onChange={handleUpdateCommands}
-      />
-    </Paper>
+      multiline
+      value={paneData.commands}
+      className={styles.commandInput}
+      onChange={handleUpdateCommands}
+    ></TextField>
   );
 };
 
