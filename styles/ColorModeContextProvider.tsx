@@ -2,10 +2,10 @@ import { createTheme, PaletteMode, ThemeProvider } from '@mui/material';
 import React from 'react';
 import getDesignTokens from './palettes';
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
 const ColorModeContextProvider = ({ children }: { children: any }) => {
-  const [mode, setMode] = React.useState<PaletteMode>('light');
+  const [mode, setMode] = React.useState<PaletteMode>('dark');
   const colorMode = React.useMemo(
     () => ({
       // The dark mode switch would invoke this method

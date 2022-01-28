@@ -1,5 +1,6 @@
 1. Persist session (cookies?)
 2. Panes styling to be "terminal like"
+3. Persist commands when changing layout
 3. Check main card top margin
 4. Implement night mode (make it dark by default)
 5. Try to make panes sizes dinamically (best option: dragable, another option: set percentage of size in a field)
