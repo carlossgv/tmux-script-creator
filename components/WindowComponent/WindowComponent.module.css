@@ -1,9 +1,6 @@
 .root {
   aspect-ratio: 16/9;
-  /* width: 1200px;
-  max-width: 1400px;
-  min-width: 1200px; */
-
+  width: 100%;
   padding: 5px;
   size-adjust: none;
   display: grid;

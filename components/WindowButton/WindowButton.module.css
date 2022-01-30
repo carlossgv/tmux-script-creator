@@ -4,5 +4,6 @@
 }
 
 .active {
-  border: 5px solid #00bcd4;
+  border: 5px solid #81d4fa;
+  border-radius: 5px;
 }
