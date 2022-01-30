@@ -1,5 +1,5 @@
 import { linearProgressClasses, PaletteMode } from '@mui/material';
-import { grey, lime, pink } from '@mui/material/colors';
+import { grey, lightBlue, lime, pink } from '@mui/material/colors';
 
 const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
@@ -18,7 +18,9 @@ const getDesignTokens = (mode: PaletteMode) => ({
         }
       : {
           // palette values for dark mode
-          primary: pink,
+          primary: {
+            main: lightBlue[200],
+          },
           secondary: lime,
           background: {
             paper: '#212121',

@@ -137,12 +137,8 @@ const Main: FC = () => {
     setActiveWindow(sessionState.windows[index]);
   };
 
-
   const updateCommands = (event: any) => {
-    const paneId =
-      event.target.parentElement.parentElement
-        .parentElement.id;
-
+    const paneId = event.target.id;
     const paneX = parseInt(paneId.split('_')[1]);
     const paneY = parseInt(paneId.split('_')[2]);
 
