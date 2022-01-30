@@ -6,4 +6,6 @@
 .active {
   border: 5px solid #81d4fa;
   border-radius: 5px;
+  padding: 10px;
+    margin: 0 5px 0 5px;
 }

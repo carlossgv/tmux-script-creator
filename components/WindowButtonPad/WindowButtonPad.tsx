@@ -40,7 +40,7 @@ const WindowButtonPad = ({
   return (
     <>
       {buttons}
-      <Button onClick={handleClick} variant="contained">
+      <Button style={{ marginLeft: "5px" }} onClick={handleClick} variant="contained">
         Add new window
       </Button>
     </>
