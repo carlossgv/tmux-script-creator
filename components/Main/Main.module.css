@@ -19,4 +19,11 @@
   .creationContainer {
     flex-direction: column;
   }
+  .mainInfo {
+    flex-direction: column;
+    margin: auto;
+    margin-bottom: 10px;
+    row-gap: 0.8rem;
+    max-width: 450px;
+  }
 }
