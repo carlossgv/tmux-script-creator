@@ -1,6 +1,6 @@
-import { Paper, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import React, { ChangeEventHandler } from 'react';
-import { Pane } from '../Main/Main';
+import { Pane } from './pane.interface';
 import styles from './PaneComponent.module.css';
 
 const PaneComponent = ({
