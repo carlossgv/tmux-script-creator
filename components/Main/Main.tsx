@@ -8,6 +8,7 @@ import WindowComponent from '../WindowComponent/WindowComponent';
 import styles from './Main.module.css';
 import { createPanes } from '../../utils/panes/panes.utils';
 import { getCookie, removeCookies, setCookies } from 'cookies-next';
+import { Pane } from '../PaneComponent/pane.interface';
 
 export enum Layout {
   Pane1 = 'One Panel',
@@ -46,9 +47,9 @@ const Main: FC = () => {
       },
     ],
   };
-
   const savedSession = getCookie('session')
-    ? JSON.parse(getCookie('session').toString())
+    ? //@ts-ignore: null possibility handled properly
+      JSON.parse(getCookie('session').toString())
     : emptySession;
 
   const [session, setSession] = React.useState(savedSession || emptySession);
@@ -64,7 +65,7 @@ const Main: FC = () => {
   }, [session]);
 
   const [windowsState, setWindowsState] = React.useState<string[]>(
-    session.windows.map((window) => window.name)
+    session.windows.map((window: Window) => window.name)
   );
 
   const [activeWindow, setActiveWindow] = React.useState<Window>(
@@ -72,7 +73,7 @@ const Main: FC = () => {
   );
 
   useEffect(() => {
-    setWindowsState(session.windows.map((window) => window.name));
+    setWindowsState(session.windows.map((window: Window) => window.name));
   }, [session.windows]);
 
   const handleChangeSessionName = (
@@ -100,7 +101,9 @@ const Main: FC = () => {
       layout: Layout.Pane1,
     };
 
-    session.windows.forEach((window, index) => (window.id = index));
+    session.windows.forEach(
+      (window: Window, index: number) => (window.id = index)
+    );
 
     setSession({
       ...session,
@@ -119,7 +122,9 @@ const Main: FC = () => {
 
     setSession({
       ...session,
-      windows: session.windows.filter((_window, i) => i !== index),
+      windows: session.windows.filter(
+        (_window: Window, i: number) => i !== index
+      ),
     });
   };
 
@@ -130,7 +135,7 @@ const Main: FC = () => {
 
     setSession({
       ...session,
-      windows: session.windows.map((window, i) =>
+      windows: session.windows.map((window: Window, i: number) =>
         i === index ? { ...window, name: event.target.value } : window
       ),
     });
@@ -145,9 +150,9 @@ const Main: FC = () => {
 
     setSession({
       ...session,
-      windows: session.windows.map((window) => {
+      windows: session.windows.map((window: Window) => {
         if (window.id === activeWindow.id) {
-          window.panes.forEach((pane) => {
+          window.panes.forEach((pane: Pane) => {
             if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
               pane.commands = event.target.value;
             }
@@ -161,7 +166,7 @@ const Main: FC = () => {
   };
 
   const updateLayout = (event: any) => {
-    const newWindows: Window[] = session.windows.map((window) => {
+    const newWindows: Window[] = session.windows.map((window: Window) => {
       if (window.id === activeWindow.id) {
         window.layout = event.target.value;
 
