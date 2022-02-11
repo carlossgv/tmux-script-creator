@@ -1,19 +1,13 @@
 import { MenuItem, Paper, Select, TextField } from '@mui/material';
-import { connect } from 'http2';
 import React, { useEffect } from 'react';
 import { FC } from 'react';
 import ResultScript from '../ResultScript/ResultScript';
 import WindowButtonPad from '../WindowButtonPad/WindowButtonPad';
+import { Window } from '../WindowComponent/Window.interface';
 import WindowComponent from '../WindowComponent/WindowComponent';
 import styles from './Main.module.css';
-import { createPanes } from './panesUtils';
-
-export type Window = {
-  id: number;
-  name: string;
-  panes: Pane[];
-  layout: Layout;
-};
+import { createPanes } from '../../utils/panes/panes.utils';
+import { getCookie, removeCookies, setCookies } from 'cookies-next';
 
 export enum Layout {
   Pane1 = 'One Panel',
@@ -27,22 +21,13 @@ export enum Layout {
   Pane4 = 'Four Panes',
 }
 
-export type Pane = {
-  commands: string;
-  xCoordinate: number;
-  yCoordinate: number;
-  width: number;
-  height: number;
-  finalCommands?: string[];
-};
-
-export type Session = {
+export interface Session {
   name: string;
   windows: Window[];
-};
+}
 
 const Main: FC = () => {
-  const [sessionState, setSessionState] = React.useState({
+  const emptySession: Session = {
     name: '',
     windows: [
       {
@@ -60,33 +45,49 @@ const Main: FC = () => {
         layout: Layout.Pane1,
       },
     ],
-  });
+  };
+
+  const savedSession = getCookie('session')
+    ? JSON.parse(getCookie('session').toString())
+    : emptySession;
+
+  const [session, setSession] = React.useState(savedSession || emptySession);
+
+  useEffect(() => {
+    const cookie = getCookie('session');
+
+    if (cookie) {
+      removeCookies('session');
+    }
+
+    setCookies('session', JSON.stringify(session));
+  }, [session]);
 
   const [windowsState, setWindowsState] = React.useState<string[]>(
-    sessionState.windows.map((window) => window.name)
+    session.windows.map((window) => window.name)
   );
 
   const [activeWindow, setActiveWindow] = React.useState<Window>(
-    sessionState.windows[0]
+    session.windows[0]
   );
 
   useEffect(() => {
-    setWindowsState(sessionState.windows.map((window) => window.name));
-  }, [sessionState.windows]);
+    setWindowsState(session.windows.map((window) => window.name));
+  }, [session.windows]);
 
   const handleChangeSessionName = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setSessionState({
-      ...sessionState,
+    setSession({
+      ...session,
       [event.target.name]: event.target.value,
     });
   };
 
   const addNewWindow = () => {
     const newWindow: Window = {
-      id: sessionState.windows.length,
-      name: `window ${sessionState.windows.length}`,
+      id: session.windows.length,
+      name: `window ${session.windows.length}`,
       panes: [
         {
           commands: '',
@@ -99,11 +100,11 @@ const Main: FC = () => {
       layout: Layout.Pane1,
     };
 
-    sessionState.windows.forEach((window, index) => (window.id = index));
+    session.windows.forEach((window, index) => (window.id = index));
 
-    setSessionState({
-      ...sessionState,
-      windows: [...sessionState.windows, newWindow],
+    setSession({
+      ...session,
+      windows: [...session.windows, newWindow],
     });
 
     setActiveWindow(newWindow);
@@ -112,13 +113,13 @@ const Main: FC = () => {
   const removeWindow = (event: any) => {
     const index = parseInt(event.target.parentElement.id.split('_')[2]);
 
-    if (sessionState.windows.length === 1) {
+    if (session.windows.length === 1) {
       return;
     }
 
-    setSessionState({
-      ...sessionState,
-      windows: sessionState.windows.filter((_window, i) => i !== index),
+    setSession({
+      ...session,
+      windows: session.windows.filter((_window, i) => i !== index),
     });
   };
 
@@ -127,14 +128,14 @@ const Main: FC = () => {
       event.target.parentElement.parentElement.parentElement.id.split('_')[2]
     );
 
-    setSessionState({
-      ...sessionState,
-      windows: sessionState.windows.map((window, i) =>
+    setSession({
+      ...session,
+      windows: session.windows.map((window, i) =>
         i === index ? { ...window, name: event.target.value } : window
       ),
     });
 
-    setActiveWindow(sessionState.windows[index]);
+    setActiveWindow(session.windows[index]);
   };
 
   const updateCommands = (event: any) => {
@@ -142,9 +143,9 @@ const Main: FC = () => {
     const paneX = parseInt(paneId.split('_')[1]);
     const paneY = parseInt(paneId.split('_')[2]);
 
-    setSessionState({
-      ...sessionState,
-      windows: sessionState.windows.map((window) => {
+    setSession({
+      ...session,
+      windows: session.windows.map((window) => {
         if (window.id === activeWindow.id) {
           window.panes.forEach((pane) => {
             if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
@@ -160,7 +161,7 @@ const Main: FC = () => {
   };
 
   const updateLayout = (event: any) => {
-    const newWindows: Window[] = sessionState.windows.map((window) => {
+    const newWindows: Window[] = session.windows.map((window) => {
       if (window.id === activeWindow.id) {
         window.layout = event.target.value;
 
@@ -176,8 +177,8 @@ const Main: FC = () => {
       }
     });
 
-    setSessionState({
-      ...sessionState,
+    setSession({
+      ...session,
       windows: newWindows,
     });
   };
@@ -209,7 +210,7 @@ const Main: FC = () => {
           </Select>
         </div>
         <WindowButtonPad
-          buttonsData={sessionState.windows}
+          buttonsData={session.windows}
           handleClick={addNewWindow}
           handleRemoveWindow={removeWindow}
           handleRenameWindow={renameWindow}
@@ -222,7 +223,7 @@ const Main: FC = () => {
           handleUpdateCommands={updateCommands}
           layout={activeWindow.layout}
         />
-        <ResultScript session={sessionState} />
+        <ResultScript session={session} />
       </div>
     </Paper>
   );

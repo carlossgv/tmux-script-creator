@@ -1,4 +1,5 @@
-import { Layout, Pane } from './Main';
+import { Layout } from '../../components/Main/Main';
+import { Pane } from '../../components/PaneComponent/pane.interface';
 
 export const createPanes = (layout: Layout): Pane[] => {
   const panes: Pane[] = [];
