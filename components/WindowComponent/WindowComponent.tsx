@@ -1,7 +1,7 @@
 import { Paper } from '@mui/material';
 import React, { ChangeEventHandler, MouseEventHandler, useEffect } from 'react';
-import { useState } from 'react';
-import { Layout, Pane } from '../Main/Main';
+import { Layout } from '../Main/Main';
+import { Pane } from '../PaneComponent/pane.interface';
 import PaneComponent from '../PaneComponent/PaneComponent';
 import styles from './WindowComponent.module.css';
 
@@ -38,7 +38,7 @@ const WindowComponent = ({
   handleUpdateCommands,
   layout,
 }: {
-  panesData: Array<Pane>;
+  panesData: Pane[];
   handleUpdateCommands: ChangeEventHandler;
   layout: Layout;
 }) => {
@@ -62,11 +62,7 @@ const WindowComponent = ({
         );
       })
     );
-  }, [
-    handleUpdateCommands,
-    panesData,
-    layout,
-  ]);
+  }, [handleUpdateCommands, panesData, layout]);
 
   return (
     <Paper

@@ -1,11 +1,7 @@
 import { Button } from '@mui/material';
-import React, {
-  ChangeEventHandler,
-  MouseEventHandler,
-  useEffect,
-} from 'react';
-import { Window } from '../Main/Main';
+import React, { ChangeEventHandler, MouseEventHandler, useEffect } from 'react';
 import WindowButton from '../WindowButton/WindowButton';
+import { Window } from '../WindowComponent/Window.interface';
 
 const WindowButtonPad = ({
   buttonsData,
@@ -14,7 +10,7 @@ const WindowButtonPad = ({
   handleRenameWindow,
   activeWindow,
 }: {
-  buttonsData: Array<Window>;
+  buttonsData: Window[];
   activeWindow: number;
   handleClick: MouseEventHandler;
   handleRemoveWindow: MouseEventHandler;
@@ -40,7 +36,11 @@ const WindowButtonPad = ({
   return (
     <>
       {buttons}
-      <Button style={{ marginLeft: "5px" }} onClick={handleClick} variant="contained">
+      <Button
+        style={{ marginLeft: '5px' }}
+        onClick={handleClick}
+        variant="contained"
+      >
         Add new window
       </Button>
     </>

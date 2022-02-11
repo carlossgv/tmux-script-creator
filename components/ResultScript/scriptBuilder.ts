@@ -1,4 +1,6 @@
-import { Session, Window, Pane } from '../Main/Main';
+import { Session } from '../Main/Main';
+import { Pane } from '../PaneComponent/pane.interface';
+import { Window } from '../WindowComponent/Window.interface';
 
 export const buildScript = (session: Session): string => {
   let script: string = '';
@@ -25,7 +27,7 @@ const buildBody = (windows: Window[]): string => {
   windows.forEach((window, index) => {
     if (index === 0) {
       body += `  tmux rename-window -t 0 '${window.name}'\n`;
-      window.panes.forEach((pane) => {
+      window.panes.forEach((pane: Pane) => {
         const commandsList = pane.commands.split(/\r?\n/);
 
         commandsList.forEach((command) => {
@@ -41,7 +43,7 @@ const buildBody = (windows: Window[]): string => {
       body += `  tmux select-pane -t 0\n`;
     } else {
       body += `  tmux new-window -t "$SESSION":${index} -n '${window.name}'\n`;
-      window.panes.forEach((pane) => {
+      window.panes.forEach((pane: Pane) => {
         const commandsList = pane.commands.split(/\r?\n/);
         commandsList.forEach((command) => {
           body += `  tmux send-keys -t '${window.name}' '${command}' C-m\n`;
