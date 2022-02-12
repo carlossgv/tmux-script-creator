@@ -1,4 +1,4 @@
-import { MenuItem, Paper, Select, TextField } from '@mui/material';
+import { Button, MenuItem, Paper, Select, TextField } from '@mui/material';
 import React, { useEffect } from 'react';
 import { FC } from 'react';
 import ResultScript from '../ResultScript/ResultScript';
@@ -54,6 +54,10 @@ const Main: FC = () => {
     : emptySession;
 
   const [session, setSession] = React.useState(savedSession || emptySession);
+
+  const resetSession = () => {
+    setSession(emptySession);
+  };
 
   useEffect(() => {
     const cookie = getCookie('session');
@@ -191,37 +195,50 @@ const Main: FC = () => {
   return (
     <Paper className={styles.main}>
       <div className={styles.mainInfo}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <TextField
-            type="text"
-            label="Session Name"
-            name="sessionName"
-            onChange={handleChangeSessionName}
-            size="small"
-            value={session.name}
-            required
+        <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <TextField
+              type="text"
+              label="Session Name"
+              name="sessionName"
+              onChange={handleChangeSessionName}
+              size="small"
+              value={session.name}
+              required
+            />
+            <Select
+              onChange={updateLayout}
+              value={activeWindow.layout}
+              size="small"
+              style={{ height: '100%' }}
+            >
+              {Object.values(Layout).map((l) => {
+                return (
+                  <MenuItem key={l} value={l}>
+                    {l}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </div>
+          <WindowButtonPad
+            buttonsData={session.windows}
+            handleClick={addNewWindow}
+            handleRemoveWindow={removeWindow}
+            handleRenameWindow={renameWindow}
+            activeWindow={activeWindow.id}
           />
-          <Select
-            onChange={updateLayout}
-            value={activeWindow.layout}
-            size="small"
-          >
-            {Object.values(Layout).map((l) => {
-              return (
-                <MenuItem key={l} value={l}>
-                  {l}
-                </MenuItem>
-              );
-            })}
-          </Select>
         </div>
-        <WindowButtonPad
-          buttonsData={session.windows}
-          handleClick={addNewWindow}
-          handleRemoveWindow={removeWindow}
-          handleRenameWindow={renameWindow}
-          activeWindow={activeWindow.id}
-        />
+        <div>
+          <Button
+            variant="contained"
+            color="error"
+            style={{ height: '100%' }}
+            onClick={resetSession}
+          >
+            Reset Session
+          </Button>
+        </div>
       </div>
       <div className={styles.creationContainer}>
         <WindowComponent
