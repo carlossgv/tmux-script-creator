@@ -57,6 +57,7 @@ const Main: FC = () => {
 
   const resetSession = () => {
     setSession(emptySession);
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -195,7 +196,7 @@ const Main: FC = () => {
   return (
     <Paper className={styles.main}>
       <div className={styles.mainInfo}>
-        <div style={{ display: 'flex' }}>
+        <div className={styles.leftInfo}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TextField
               type="text"
@@ -229,13 +230,8 @@ const Main: FC = () => {
             activeWindow={activeWindow.id}
           />
         </div>
-        <div>
-          <Button
-            variant="contained"
-            color="error"
-            style={{ height: '100%' }}
-            onClick={resetSession}
-          >
+        <div className={styles.rightInfo}>
+          <Button variant="contained" color="error" onClick={resetSession}>
             Reset Session
           </Button>
         </div>

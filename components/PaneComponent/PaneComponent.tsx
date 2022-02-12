@@ -23,6 +23,7 @@ const PaneComponent = ({
       value={paneData.commands}
       className={styles.commandInput}
       onChange={handleUpdateCommands}
+      placeholder="Enter commands here..."
     ></TextField>
   );
 };
