@@ -47,9 +47,10 @@ const Main: FC = () => {
       },
     ],
   };
+
   const savedSession = getCookie('session')
     ? //@ts-ignore: null possibility handled properly
-      JSON.parse(getCookie('session').toString())
+      JSON.parse(getCookie('session'))
     : emptySession;
 
   const [session, setSession] = React.useState(savedSession || emptySession);
@@ -81,7 +82,7 @@ const Main: FC = () => {
   ) => {
     setSession({
       ...session,
-      [event.target.name]: event.target.value,
+      name: event.target.value,
     });
   };
 
@@ -171,7 +172,6 @@ const Main: FC = () => {
         window.layout = event.target.value;
 
         const panes = createPanes(window.layout);
-
         window.panes = panes;
 
         setActiveWindow(window);
@@ -195,10 +195,11 @@ const Main: FC = () => {
           <TextField
             type="text"
             label="Session Name"
-            name="name"
+            name="sessionName"
             onChange={handleChangeSessionName}
-            required
             size="small"
+            value={session.name}
+            required
           />
           <Select
             onChange={updateLayout}
