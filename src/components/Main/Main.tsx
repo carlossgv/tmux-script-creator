@@ -1,14 +1,13 @@
 import { Button, MenuItem, Paper, Select, TextField } from '@mui/material';
-import React, { useEffect } from 'react';
-import { FC } from 'react';
+import { getCookie, removeCookies, setCookies } from 'cookies-next';
+import React, { FC, useEffect } from 'react';
+import { createPanes } from '../../utils/panes/panes.utils';
+import { Pane } from '../PaneComponent/pane.interface';
 import ResultScript from '../ResultScript/ResultScript';
 import WindowButtonPad from '../WindowButtonPad/WindowButtonPad';
 import { Window } from '../WindowComponent/Window.interface';
 import WindowComponent from '../WindowComponent/WindowComponent';
 import styles from './Main.module.css';
-import { createPanes } from '../../utils/panes/panes.utils';
-import { getCookie, removeCookies, setCookies } from 'cookies-next';
-import { Pane } from '../PaneComponent/pane.interface';
 
 export enum Layout {
   Pane1 = 'One Panel',
