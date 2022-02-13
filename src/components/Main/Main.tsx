@@ -1,6 +1,9 @@
 import { Button, MenuItem, Paper, Select, TextField } from '@mui/material';
 import { getCookie, removeCookies, setCookies } from 'cookies-next';
 import React, { FC, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import { resetSession } from '../../features/session/sessionSlice';
 import { createPanes } from '../../utils/panes/panes.utils';
 import { Pane } from '../PaneComponent/pane.interface';
 import ResultScript from '../ResultScript/ResultScript';
@@ -21,43 +24,9 @@ export enum Layout {
   Pane4 = 'Four Panes',
 }
 
-export interface Session {
-  name: string;
-  windows: Window[];
-}
-
 const Main: FC = () => {
-  const emptySession: Session = {
-    name: '',
-    windows: [
-      {
-        id: 0,
-        name: 'window 0',
-        panes: [
-          {
-            commands: '',
-            xCoordinate: 0,
-            yCoordinate: 0,
-            width: 1,
-            height: 1,
-          },
-        ],
-        layout: Layout.Pane1,
-      },
-    ],
-  };
-
-  const savedSession = getCookie('session')
-    ? //@ts-ignore: null possibility handled properly
-      JSON.parse(getCookie('session'))
-    : emptySession;
-
-  const [session, setSession] = React.useState(savedSession || emptySession);
-
-  const resetSession = () => {
-    setSession(emptySession);
-    window.location.reload();
-  };
+  const session = useSelector((state: RootState) => state.session);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const cookie = getCookie('session');
@@ -69,128 +38,128 @@ const Main: FC = () => {
     setCookies('session', JSON.stringify(session));
   }, [session]);
 
-  const [windowsState, setWindowsState] = React.useState<string[]>(
-    session.windows.map((window: Window) => window.name)
-  );
+  // const [windowsState, setWindowsState] = React.useState<string[]>(
+  //   session.windows.map((window: Window) => window.name)
+  // );
 
-  const [activeWindow, setActiveWindow] = React.useState<Window>(
-    session.windows[0]
-  );
+  // const [activeWindow, setActiveWindow] = React.useState<Window>(
+  //   session.windows[0]
+  // );
 
-  useEffect(() => {
-    setWindowsState(session.windows.map((window: Window) => window.name));
-  }, [session.windows]);
+  // useEffect(() => {
+  //   setWindowsState(session.windows.map((window: Window) => window.name));
+  // }, [session.windows]);
 
-  const handleChangeSessionName = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setSession({
-      ...session,
-      name: event.target.value,
-    });
-  };
+  // const handleChangeSessionName = (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   setSession({
+  //     ...session,
+  //     name: event.target.value,
+  //   });
+  // };
 
-  const addNewWindow = () => {
-    const newWindow: Window = {
-      id: session.windows.length,
-      name: `window ${session.windows.length}`,
-      panes: [
-        {
-          commands: '',
-          xCoordinate: 0,
-          yCoordinate: 0,
-          width: 1,
-          height: 1,
-        },
-      ],
-      layout: Layout.Pane1,
-    };
+  // const addNewWindow = () => {
+  //   const newWindow: Window = {
+  //     id: session.windows.length,
+  //     name: `window ${session.windows.length}`,
+  //     panes: [
+  //       {
+  //         commands: '',
+  //         xCoordinate: 0,
+  //         yCoordinate: 0,
+  //         width: 1,
+  //         height: 1,
+  //       },
+  //     ],
+  //     layout: Layout.Pane1,
+  //   };
 
-    session.windows.forEach(
-      (window: Window, index: number) => (window.id = index)
-    );
+  //   session.windows.forEach(
+  //     (window: Window, index: number) => (window.id = index)
+  //   );
 
-    setSession({
-      ...session,
-      windows: [...session.windows, newWindow],
-    });
+  //   setSession({
+  //     ...session,
+  //     windows: [...session.windows, newWindow],
+  //   });
 
-    setActiveWindow(newWindow);
-  };
+  //   setActiveWindow(newWindow);
+  // };
 
-  const removeWindow = (event: any) => {
-    const index = parseInt(event.target.parentElement.id.split('_')[2]);
+  // const removeWindow = (event: any) => {
+  //   const index = parseInt(event.target.parentElement.id.split('_')[2]);
 
-    if (session.windows.length === 1) {
-      return;
-    }
+  //   if (session.windows.length === 1) {
+  //     return;
+  //   }
 
-    setSession({
-      ...session,
-      windows: session.windows.filter(
-        (_window: Window, i: number) => i !== index
-      ),
-    });
-  };
+  //   setSession({
+  //     ...session,
+  //     windows: session.windows.filter(
+  //       (_window: Window, i: number) => i !== index
+  //     ),
+  //   });
+  // };
 
-  const renameWindow = (event: any) => {
-    const index = parseInt(
-      event.target.parentElement.parentElement.parentElement.id.split('_')[2]
-    );
+  // const renameWindow = (event: any) => {
+  //   const index = parseInt(
+  //     event.target.parentElement.parentElement.parentElement.id.split('_')[2]
+  //   );
 
-    setSession({
-      ...session,
-      windows: session.windows.map((window: Window, i: number) =>
-        i === index ? { ...window, name: event.target.value } : window
-      ),
-    });
+  //   setSession({
+  //     ...session,
+  //     windows: session.windows.map((window: Window, i: number) =>
+  //       i === index ? { ...window, name: event.target.value } : window
+  //     ),
+  //   });
 
-    setActiveWindow(session.windows[index]);
-  };
+  //   setActiveWindow(session.windows[index]);
+  // };
 
-  const updateCommands = (event: any) => {
-    const paneId = event.target.id;
-    const paneX = parseInt(paneId.split('_')[1]);
-    const paneY = parseInt(paneId.split('_')[2]);
+  // const updateCommands = (event: any) => {
+  //   const paneId = event.target.id;
+  //   const paneX = parseInt(paneId.split('_')[1]);
+  //   const paneY = parseInt(paneId.split('_')[2]);
 
-    setSession({
-      ...session,
-      windows: session.windows.map((window: Window) => {
-        if (window.id === activeWindow.id) {
-          window.panes.forEach((pane: Pane) => {
-            if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
-              pane.commands = event.target.value;
-            }
-          });
-          return window;
-        } else {
-          return window;
-        }
-      }),
-    });
-  };
+  //   setSession({
+  //     ...session,
+  //     windows: session.windows.map((window: Window) => {
+  //       if (window.id === activeWindow.id) {
+  //         window.panes.forEach((pane: Pane) => {
+  //           if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
+  //             pane.commands = event.target.value;
+  //           }
+  //         });
+  //         return window;
+  //       } else {
+  //         return window;
+  //       }
+  //     }),
+  //   });
+  // };
 
-  const updateLayout = (event: any) => {
-    const newWindows: Window[] = session.windows.map((window: Window) => {
-      if (window.id === activeWindow.id) {
-        window.layout = event.target.value;
+  // const updateLayout = (event: any) => {
+  //   const newWindows: Window[] = session.windows.map((window: Window) => {
+  //     if (window.id === activeWindow.id) {
+  //       window.layout = event.target.value;
 
-        const panes = createPanes(window.layout);
-        window.panes = panes;
+  //       const panes = createPanes(window.layout);
+  //       window.panes = panes;
 
-        setActiveWindow(window);
+  //       setActiveWindow(window);
 
-        return window;
-      } else {
-        return window;
-      }
-    });
+  //       return window;
+  //     } else {
+  //       return window;
+  //     }
+  //   });
 
-    setSession({
-      ...session,
-      windows: newWindows,
-    });
-  };
+  //   setSession({
+  //     ...session,
+  //     windows: newWindows,
+  //   });
+  // };
 
   return (
     <Paper className={styles.main}>
@@ -201,14 +170,14 @@ const Main: FC = () => {
               type="text"
               label="Session Name"
               name="sessionName"
-              onChange={handleChangeSessionName}
+              // onChange={handleChangeSessionName}
               size="small"
-              value={session.name}
+              // value={session.name}
               required
             />
             <Select
-              onChange={updateLayout}
-              value={activeWindow.layout}
+              // onChange={updateLayout}
+              // value={activeWindow.layout}
               size="small"
               style={{ height: '100%' }}
             >
@@ -221,26 +190,30 @@ const Main: FC = () => {
               })}
             </Select>
           </div>
-          <WindowButtonPad
+          {/* <WindowButtonPad
             buttonsData={session.windows}
             handleClick={addNewWindow}
             handleRemoveWindow={removeWindow}
             handleRenameWindow={renameWindow}
             activeWindow={activeWindow.id}
-          />
+          /> */}
         </div>
         <div className={styles.rightInfo}>
-          <Button variant="contained" color="error" onClick={resetSession}>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => dispatch(resetSession())}
+          >
             Reset Session
           </Button>
         </div>
       </div>
       <div className={styles.creationContainer}>
-        <WindowComponent
+        {/* <WindowComponent
           panesData={activeWindow.panes}
           handleUpdateCommands={updateCommands}
           layout={activeWindow.layout}
-        />
+        /> */}
         <ResultScript session={session} />
       </div>
     </Paper>
