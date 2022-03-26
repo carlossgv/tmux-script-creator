@@ -12,6 +12,8 @@ export const createPanes = (layout: Layout): Pane[] => {
         yCoordinate: 0,
         width: 1,
         height: 1,
+        widthPercentage: null,
+        heightPercentage: null,
       });
       break;
     case Layout.Pane2V:
@@ -21,6 +23,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         yCoordinate: 0,
         width: 1,
         height: 1,
+        widthPercentage: 50,
         finalCommands: ['splitw -h'],
       });
       panes.push({
@@ -29,6 +32,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         yCoordinate: 0,
         width: 1,
         height: 1,
+        widthPercentage: 50,
       });
       break;
     case Layout.Pane2H:
@@ -38,6 +42,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         yCoordinate: 0,
         width: 1,
         height: 1,
+        heightPercentage: 50,
         finalCommands: ['splitw -v'],
       });
       panes.push({
@@ -46,6 +51,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         yCoordinate: 1,
         width: 1,
         height: 1,
+        heightPercentage: 50,
       });
       break;
     case Layout.Pane3V:
@@ -55,6 +61,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         yCoordinate: 0,
         width: 1,
         height: 1,
+        widthPercentage: 33,
         finalCommands: ['splitw -h'],
       });
       panes.push({
@@ -63,6 +70,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         yCoordinate: 0,
         width: 1,
         height: 1,
+        widthPercentage: 33,
         finalCommands: ['splitw -h'],
       });
       panes.push({
@@ -71,6 +79,7 @@ export const createPanes = (layout: Layout): Pane[] => {
         yCoordinate: 0,
         width: 1,
         height: 1,
+        widthPercentage: 33,
         finalCommands: ['select-layout even-horizontal'],
       });
       break;

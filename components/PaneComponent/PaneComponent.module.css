@@ -10,3 +10,32 @@
 .commandInput textarea {
   height: 100% !important;
 }
+
+.layout {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.leftContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.rightContainer {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  justify-content: center;
+  padding: 5px;
+}
+
+.widthContainer {
+  padding: 5px;
+}
+
+.dimensionsInput {
+  text-align: center;
+}
