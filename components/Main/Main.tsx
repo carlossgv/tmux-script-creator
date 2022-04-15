@@ -30,20 +30,19 @@ export interface Session {
 const initialWindow = {
   id: 0,
   name: 'window 0',
-  containers: [
-    {
-      orientation: 'horizontal',
-      panes: [
-        {
-          commands: '',
-          xCoordinate: 0,
-          yCoordinate: 0,
-          width: 1,
-          height: 1,
-        },
-      ],
-    },
-  ],
+  containers: {
+    orientation: 'horizontal',
+    panes: [
+      {
+        commands: '',
+        xCoordinate: 0,
+        yCoordinate: 0,
+        width: 1,
+        height: 1,
+      },
+    ],
+  },
+
   layout: Layout.Pane1,
 };
 
@@ -52,8 +51,6 @@ const Main: FC = () => {
     name: '',
     windows: [initialWindow],
   };
-
-  console.log('EMPTY SESSION: ', emptySession);
 
   const savedSession = getCookie('session')
     ? //@ts-ignore: null possibility handled properly
@@ -189,7 +186,6 @@ const Main: FC = () => {
       windows: newWindows,
     });
   };
-  console.log('SESSION ', session);
 
   return (
     <Paper className={styles.main}>

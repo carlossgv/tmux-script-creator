@@ -1,6 +1,6 @@
 import { Paper } from '@mui/material';
 import React, { ChangeEventHandler, MouseEventHandler, useEffect } from 'react';
-import { Container } from '../../utils/panes/panes.utils';
+import { LayoutContainer } from '../../utils/panes/panes.utils';
 import { Layout } from '../Main/Main';
 import { Pane } from '../PaneComponent/pane.interface';
 import PaneComponent from '../PaneComponent/PaneComponent';
@@ -39,7 +39,7 @@ const WindowComponent = ({
   handleUpdateCommands,
   layout,
 }: {
-  panesData: Container[];
+  panesData: LayoutContainer;
   handleUpdateCommands: ChangeEventHandler;
   layout: Layout;
 }) => {
@@ -49,43 +49,42 @@ const WindowComponent = ({
     rows: 1,
   });
 
+  const iterateContainer = (container: LayoutContainer) => {
+    // console.log('inside window component', JSON.stringify(container, null, 2));
+
+    const innerLayout = container.panes.map((pane: Pane | LayoutContainer) => {
+      if (pane.orientation) {
+        iterateContainer(pane);
+      } else {
+        return (
+          <PaneComponent
+            paneData={pane}
+            handleUpdateCommands={handleUpdateCommands}
+            key={`pane_${pane.xCoordinate}_${pane.yCoordinate}`}
+            id={`pane_${pane.xCoordinate}_${pane.yCoordinate}`}
+          />
+        );
+      }
+    });
+    return (
+      <div
+        className={`container_div`}
+        style={{ display: 'flex', flexDirection: container.orientation }}
+      >
+        {innerLayout}
+      </div>
+    );
+  };
+
   useEffect(() => {
     // setDivisions(createGrid(layout));
     console.log(panesData);
 
-    const toRender = panesData.map((container, index) => {
-      return (
-        <div
-          key={`container_${index}`}
-          style={{
-            display: 'flex',
-            flexDirection:
-              container.orientation === 'horizontal' ? 'row' : 'column',
-          }}
-        >
-          {container.panes.map((paneData) => {
-            return (
-              <PaneComponent
-                key={`${paneData.xCoordinate}_${paneData.yCoordinate}`}
-                paneData={paneData}
-                handleUpdateCommands={handleUpdateCommands}
-              />
-            );
-          })}
-        </div>
-      );
-    });
+    const toRender = iterateContainer(panesData);
+
+    console.log(toRender);
 
     setPanes(toRender);
-    // panesData.map((paneData) => {
-    //   return (
-    //     <PaneComponent
-    //       key={`${paneData.xCoordinate}_${paneData.yCoordinate}`}
-    //       paneData={paneData}
-    //       handleUpdateCommands={handleUpdateCommands}
-    //     />
-    //   );
-    // })
   }, [handleUpdateCommands, panesData, layout]);
 
   return (
