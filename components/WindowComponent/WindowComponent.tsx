@@ -1,5 +1,6 @@
 import { Paper } from '@mui/material';
 import React, { ChangeEventHandler, MouseEventHandler, useEffect } from 'react';
+import { Container } from '../../utils/panes/panes.utils';
 import { Layout } from '../Main/Main';
 import { Pane } from '../PaneComponent/pane.interface';
 import PaneComponent from '../PaneComponent/PaneComponent';
@@ -38,7 +39,7 @@ const WindowComponent = ({
   handleUpdateCommands,
   layout,
 }: {
-  panesData: Pane[];
+  panesData: Container[];
   handleUpdateCommands: ChangeEventHandler;
   layout: Layout;
 }) => {
@@ -49,30 +50,46 @@ const WindowComponent = ({
   });
 
   useEffect(() => {
-    setDivisions(createGrid(layout));
+    // setDivisions(createGrid(layout));
+    console.log(panesData);
 
-    setPanes(
-      panesData.map((paneData) => {
-        return (
-          <PaneComponent
-            key={`${paneData.xCoordinate}_${paneData.yCoordinate}`}
-            paneData={paneData}
-            handleUpdateCommands={handleUpdateCommands}
-          />
-        );
-      })
-    );
+    const toRender = panesData.map((container, index) => {
+      return (
+        <div
+          key={`container_${index}`}
+          style={{
+            display: 'flex',
+            flexDirection:
+              container.orientation === 'horizontal' ? 'row' : 'column',
+          }}
+        >
+          {container.panes.map((paneData) => {
+            return (
+              <PaneComponent
+                key={`${paneData.xCoordinate}_${paneData.yCoordinate}`}
+                paneData={paneData}
+                handleUpdateCommands={handleUpdateCommands}
+              />
+            );
+          })}
+        </div>
+      );
+    });
+
+    setPanes(toRender);
+    // panesData.map((paneData) => {
+    //   return (
+    //     <PaneComponent
+    //       key={`${paneData.xCoordinate}_${paneData.yCoordinate}`}
+    //       paneData={paneData}
+    //       handleUpdateCommands={handleUpdateCommands}
+    //     />
+    //   );
+    // })
   }, [handleUpdateCommands, panesData, layout]);
 
   return (
-    <Paper
-      elevation={8}
-      className={styles.root}
-      style={{
-        gridTemplateColumns: `repeat(${divisions.columns}, 1fr)`,
-        gridTemplateRows: `repeat(${divisions.rows}, 1fr)`,
-      }}
-    >
+    <Paper elevation={8} className={styles.root}>
       {panes}
     </Paper>
   );

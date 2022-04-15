@@ -27,26 +27,33 @@ export interface Session {
   windows: Window[];
 }
 
+const initialWindow = {
+  id: 0,
+  name: 'window 0',
+  containers: [
+    {
+      orientation: 'horizontal',
+      panes: [
+        {
+          commands: '',
+          xCoordinate: 0,
+          yCoordinate: 0,
+          width: 1,
+          height: 1,
+        },
+      ],
+    },
+  ],
+  layout: Layout.Pane1,
+};
+
 const Main: FC = () => {
   const emptySession: Session = {
     name: '',
-    windows: [
-      {
-        id: 0,
-        name: 'window 0',
-        panes: [
-          {
-            commands: '',
-            xCoordinate: 0,
-            yCoordinate: 0,
-            width: 1,
-            height: 1,
-          },
-        ],
-        layout: Layout.Pane1,
-      },
-    ],
+    windows: [initialWindow],
   };
+
+  console.log('EMPTY SESSION: ', emptySession);
 
   const savedSession = getCookie('session')
     ? //@ts-ignore: null possibility handled properly
@@ -93,18 +100,8 @@ const Main: FC = () => {
 
   const addNewWindow = () => {
     const newWindow: Window = {
+      ...initialWindow,
       id: session.windows.length,
-      name: `window ${session.windows.length}`,
-      panes: [
-        {
-          commands: '',
-          xCoordinate: 0,
-          yCoordinate: 0,
-          width: 1,
-          height: 1,
-        },
-      ],
-      layout: Layout.Pane1,
     };
 
     session.windows.forEach(
@@ -158,11 +155,11 @@ const Main: FC = () => {
       ...session,
       windows: session.windows.map((window: Window) => {
         if (window.id === activeWindow.id) {
-          window.panes.forEach((pane: Pane) => {
-            if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
-              pane.commands = event.target.value;
-            }
-          });
+          // window.panes.forEach((pane: Pane) => {
+          //   if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
+          //     pane.commands = event.target.value;
+          //   }
+          // });
           return window;
         } else {
           return window;
@@ -176,8 +173,8 @@ const Main: FC = () => {
       if (window.id === activeWindow.id) {
         window.layout = event.target.value;
 
-        const panes = createPanes(window.layout);
-        window.panes = panes;
+        const containers = createPanes(window.layout);
+        window.containers = containers;
 
         setActiveWindow(window);
 
@@ -192,6 +189,7 @@ const Main: FC = () => {
       windows: newWindows,
     });
   };
+  console.log('SESSION ', session);
 
   return (
     <Paper className={styles.main}>
@@ -238,7 +236,7 @@ const Main: FC = () => {
       </div>
       <div className={styles.creationContainer}>
         <WindowComponent
-          panesData={activeWindow.panes}
+          panesData={activeWindow.containers}
           handleUpdateCommands={updateCommands}
           layout={activeWindow.layout}
         />
