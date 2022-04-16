@@ -50,13 +50,14 @@ const WindowComponent = ({
   });
 
   const iterateContainer = (container: LayoutContainer) => {
-    // console.log('inside window component', JSON.stringify(container, null, 2));
+    const innerLayout = [];
 
-    const innerLayout = container.panes.map((pane: Pane | LayoutContainer) => {
+    container.panes.forEach((pane: Pane | LayoutContainer) => {
+      console.log(pane);
       if (pane.orientation) {
-        iterateContainer(pane);
+        innerLayout.push(iterateContainer(pane));
       } else {
-        return (
+        innerLayout.push(
           <PaneComponent
             paneData={pane}
             handleUpdateCommands={handleUpdateCommands}
@@ -66,6 +67,7 @@ const WindowComponent = ({
         );
       }
     });
+
     return (
       <div
         className={`container_div`}
@@ -78,7 +80,7 @@ const WindowComponent = ({
 
   useEffect(() => {
     // setDivisions(createGrid(layout));
-    console.log(panesData);
+    // console.log(panesData);
 
     const toRender = iterateContainer(panesData);
 
