@@ -1,5 +1,10 @@
 import { Paper } from '@mui/material';
-import React, { ChangeEventHandler, MouseEventHandler, useEffect } from 'react';
+import React, {
+  ChangeEventHandler,
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+} from 'react';
 import { LayoutContainer } from '../../utils/panes/panes.utils';
 import { Layout } from '../Main/Main';
 import { Pane } from '../PaneComponent/pane.interface';
@@ -11,29 +16,6 @@ type Divisions = {
   rows: number;
 };
 
-const createGrid = (layout: Layout): Divisions => {
-  let divisions: Divisions = {} as Divisions;
-  switch (layout) {
-    case Layout.Pane1:
-      divisions = { columns: 1, rows: 1 };
-      break;
-    case Layout.Pane2V:
-      divisions = { columns: 2, rows: 1 };
-      break;
-    case Layout.Pane2H:
-      divisions = { columns: 1, rows: 2 };
-      break;
-    case Layout.Pane3V:
-      divisions = { columns: 3, rows: 1 };
-      break;
-    default:
-      divisions = { columns: 2, rows: 2 };
-      break;
-  }
-
-  return divisions;
-};
-
 const WindowComponent = ({
   panesData,
   handleUpdateCommands,
@@ -43,51 +25,49 @@ const WindowComponent = ({
   handleUpdateCommands: ChangeEventHandler;
   layout: Layout;
 }) => {
-  const [panes, setPanes] = React.useState<JSX.Element[]>([]);
-  const [divisions, setDivisions] = React.useState<Divisions>({
-    columns: 1,
-    rows: 1,
-  });
+  const [panes, setPanes] = React.useState<JSX.Element>();
 
-  const iterateContainer = (container: LayoutContainer) => {
-    const innerLayout = [];
+  const createPanesLayout = useCallback(
+    (container: Pane | LayoutContainer) => {
+      const innerLayout: JSX.Element[] = [];
+      let containerId = 0;
 
-    container.panes.forEach((pane: Pane | LayoutContainer) => {
-      console.log(pane);
-      if (pane.orientation) {
-        innerLayout.push(iterateContainer(pane));
-      } else {
-        innerLayout.push(
-          <PaneComponent
-            paneData={pane}
-            handleUpdateCommands={handleUpdateCommands}
-            key={`pane_${pane.xCoordinate}_${pane.yCoordinate}`}
-            id={`pane_${pane.xCoordinate}_${pane.yCoordinate}`}
-          />
-        );
-      }
-    });
+      container.panes.forEach((pane: Pane | LayoutContainer) => {
+        console.log(pane);
+        if (pane?.orientation) {
+          innerLayout.push(createPanesLayout(pane));
+        } else {
+          innerLayout.push(
+            <PaneComponent
+              paneData={pane}
+              handleUpdateCommands={handleUpdateCommands}
+              key={`pane_${pane.xCoordinate}_${pane.yCoordinate}`}
+              id={`pane_${pane.xCoordinate}_${pane.yCoordinate}`}
+            />
+          );
+        }
+      });
 
-    return (
-      <div
-        className={`container_div`}
-        style={{ display: 'flex', flexDirection: container.orientation }}
-      >
-        {innerLayout}
-      </div>
-    );
-  };
+      containerId++;
+
+      return (
+        <div
+          className={`container_div`}
+          style={{ display: 'flex', flexDirection: container.orientation }}
+          id={`container_${containerId - 1}`}
+        >
+          {innerLayout}
+        </div>
+      );
+    },
+    [handleUpdateCommands]
+  );
 
   useEffect(() => {
-    // setDivisions(createGrid(layout));
-    // console.log(panesData);
+    const layout = createPanesLayout(panesData);
 
-    const toRender = iterateContainer(panesData);
-
-    console.log(toRender);
-
-    setPanes(toRender);
-  }, [handleUpdateCommands, panesData, layout]);
+    setPanes(layout);
+  }, [createPanesLayout, panesData]);
 
   return (
     <Paper elevation={8} className={styles.root}>
