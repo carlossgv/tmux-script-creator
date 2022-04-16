@@ -77,32 +77,36 @@ export const createPanes = (layout: Layout): LayoutContainer => {
       };
 
       break;
-    // case Layout.Pane3V:
-    //   panes.push({
-    //     commands: '',
-    //     xCoordinate: 0,
-    //     yCoordinate: 0,
-    //     width: 1,
-    //     height: 1,
-    //     finalCommands: ['splitw -h'],
-    //   });
-    //   panes.push({
-    //     commands: '',
-    //     xCoordinate: 1,
-    //     yCoordinate: 0,
-    //     width: 1,
-    //     height: 1,
-    //     finalCommands: ['splitw -h'],
-    //   });
-    //   panes.push({
-    //     commands: '',
-    //     xCoordinate: 2,
-    //     yCoordinate: 0,
-    //     width: 1,
-    //     height: 1,
-    //     finalCommands: ['select-layout even-horizontal'],
-    //   });
-    //   break;
+    case Layout.Pane3V:
+      containers = {
+        orientation: 'row',
+        panes: [
+          {
+            commands: '',
+            xCoordinate: 0,
+            yCoordinate: 0,
+            width: 1,
+            height: 1,
+            finalCommands: ['splitw -h'],
+          },
+          {
+            commands: '',
+            xCoordinate: 1,
+            yCoordinate: 0,
+            width: 1,
+            height: 1,
+            finalCommands: ['splitw -h'],
+          },
+          {
+            commands: '',
+            xCoordinate: 2,
+            yCoordinate: 0,
+            width: 1,
+            height: 1,
+          },
+        ],
+      };
+      break;
     case Layout.Pane3V12:
       containers = {
         orientation: 'row',
@@ -175,57 +179,77 @@ export const createPanes = (layout: Layout): LayoutContainer => {
       };
 
       break;
-    // case Layout.Pane3H21:
-    //   panes.push({
-    //     commands: '',
-    //     xCoordinate: 0,
-    //     yCoordinate: 0,
-    //     width: 1,
-    //     height: 1,
-    //     finalCommands: ['splitw -v'],
-    //   });
-    //   panes.push({
-    //     commands: '',
-    //     xCoordinate: 0,
-    //     yCoordinate: 1,
-    //     width: 2,
-    //     height: 1,
-    //     finalCommands: ['select-pane -t 0', 'splitw -h'],
-    //   });
-    //   panes.push({
-    //     commands: '',
-    //     xCoordinate: 1,
-    //     yCoordinate: 0,
-    //     width: 2,
-    //     height: 1,
-    //   });
+    case Layout.Pane3H21:
+      containers = {
+        orientation: 'column',
+        panes: [
+          {
+            orientation: 'row',
+            panes: [
+              {
+                commands: '',
+                xCoordinate: 0,
+                yCoordinate: 0,
+                width: 1,
+                height: 1,
+                finalCommands: ['splitw -v'],
+              },
+              {
+                commands: '',
+                xCoordinate: 0,
+                yCoordinate: 1,
+                width: 2,
+                height: 1,
+                finalCommands: ['select-pane -t 0', 'splitw -h'],
+              },
+            ],
+          },
+          {
+            commands: '',
+            xCoordinate: 1,
+            yCoordinate: 0,
+            width: 2,
+            height: 1,
+          },
+        ],
+      };
 
-    //   break;
-    // case Layout.Pane3H12:
-    //   panes.push({
-    //     commands: '',
-    //     xCoordinate: 0,
-    //     yCoordinate: 0,
-    //     width: 2,
-    //     height: 1,
-    //     finalCommands: ['splitw -v'],
-    //   });
-    //   panes.push({
-    //     commands: '',
-    //     xCoordinate: 0,
-    //     yCoordinate: 1,
-    //     width: 1,
-    //     height: 1,
-    //     finalCommands: ['splitw -h'],
-    //   });
-    //   panes.push({
-    //     commands: '',
-    //     xCoordinate: 1,
-    //     yCoordinate: 1,
-    //     width: 1,
-    //     height: 1,
-    //   });
-    //   break;
+      break;
+    case Layout.Pane3H12:
+      containers = {
+        orientation: 'column',
+        panes: [
+          {
+            commands: '',
+            xCoordinate: 0,
+            yCoordinate: 0,
+            width: 2,
+            height: 1,
+            finalCommands: ['splitw -v'],
+          },
+          {
+            orientation: 'row',
+            panes: [
+              {
+                commands: '',
+                xCoordinate: 0,
+                yCoordinate: 1,
+                width: 1,
+                height: 1,
+                finalCommands: ['splitw -h'],
+              },
+              {
+                commands: '',
+                xCoordinate: 1,
+                yCoordinate: 1,
+                width: 1,
+                height: 1,
+              },
+            ],
+          },
+        ],
+      };
+      break;
     case Layout.Pane4:
       containers = {
         orientation: 'row',
@@ -274,37 +298,6 @@ export const createPanes = (layout: Layout): LayoutContainer => {
           },
         ],
       };
-      //   panes.push({
-      //     commands: '',
-      //     xCoordinate: 0,
-      //     yCoordinate: 0,
-      //     width: 1,
-      //     height: 1,
-      //     finalCommands: ['splitw -h'],
-      //   });
-      //   panes.push({
-      //     commands: '',
-      //     xCoordinate: 1,
-      //     yCoordinate: 0,
-      //     width: 1,
-      //     height: 1,
-      //     finalCommands: ['splitw -v'],
-      //   });
-      //   panes.push({
-      //     commands: '',
-      //     xCoordinate: 1,
-      //     yCoordinate: 1,
-      //     width: 1,
-      //     height: 1,
-      //     finalCommands: ['select-pane -t 0', 'splitw -v'],
-      //   });
-      //   panes.push({
-      //     commands: '',
-      //     xCoordinate: 0,
-      //     yCoordinate: 1,
-      //     width: 1,
-      //     height: 1,
-      //   });
       break;
   }
   return containers;
