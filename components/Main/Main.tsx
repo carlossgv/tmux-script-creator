@@ -6,7 +6,7 @@ import WindowButtonPad from '../WindowButtonPad/WindowButtonPad';
 import { Window } from '../WindowComponent/Window.interface';
 import WindowComponent from '../WindowComponent/WindowComponent';
 import styles from './Main.module.css';
-import { createPanes } from '../../utils/panes/panes.utils';
+import { createPanes, LayoutContainer } from '../../utils/panes/panes.utils';
 import { getCookie, removeCookies, setCookies } from 'cookies-next';
 import { Pane } from '../PaneComponent/pane.interface';
 
@@ -27,11 +27,11 @@ export interface Session {
   windows: Window[];
 }
 
-const initialWindow = {
+const initialWindow: Window = {
   id: 0,
   name: 'window 0',
   containers: {
-    orientation: 'horizontal',
+    orientation: 'row',
     panes: [
       {
         commands: '',
@@ -143,25 +143,32 @@ const Main: FC = () => {
     setActiveWindow(session.windows[index]);
   };
 
-  const updateCommands = (event: any) => {
-    const paneId = event.target.id;
-    const paneX = parseInt(paneId.split('_')[1]);
-    const paneY = parseInt(paneId.split('_')[2]);
+  const updatePane = (changedPane: Pane) => {
+    const paneX = changedPane.xCoordinate;
+    const paneY = changedPane.yCoordinate;
+
+    const updatedWindow = session.windows.map((window: Window) => {
+      if (window.id === activeWindow.id) {
+        window.containers.panes.forEach((pane: Pane | LayoutContainer) => {
+          if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
+            pane.commands = changedPane.commands;
+          } else if (pane?.orientation) {
+            pane.panes.forEach((pane: Pane) => {
+              if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
+                pane.commands = changedPane.commands;
+              }
+            });
+          }
+        });
+        return window;
+      } else {
+        return window;
+      }
+    });
 
     setSession({
       ...session,
-      windows: session.windows.map((window: Window) => {
-        if (window.id === activeWindow.id) {
-          // window.panes.forEach((pane: Pane) => {
-          //   if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
-          //     pane.commands = event.target.value;
-          //   }
-          // });
-          return window;
-        } else {
-          return window;
-        }
-      }),
+      windows: updatedWindow,
     });
   };
 
@@ -233,8 +240,7 @@ const Main: FC = () => {
       <div className={styles.creationContainer}>
         <WindowComponent
           panesData={activeWindow.containers}
-          handleUpdateCommands={updateCommands}
-          layout={activeWindow.layout}
+          handleUpdatePane={(pane) => updatePane(pane)}
         />
         <ResultScript session={session} />
       </div>

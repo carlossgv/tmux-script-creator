@@ -7,8 +7,6 @@ export type LayoutContainer = {
 };
 
 export const createPanes = (layout: Layout): LayoutContainer => {
-  const panes: Pane[] = [];
-
   let containers: LayoutContainer = {
     panes: [],
     orientation: 'row',

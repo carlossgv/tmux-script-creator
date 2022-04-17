@@ -11,62 +11,49 @@ import { Pane } from '../PaneComponent/pane.interface';
 import PaneComponent from '../PaneComponent/PaneComponent';
 import styles from './WindowComponent.module.css';
 
-type Divisions = {
-  columns: number;
-  rows: number;
-};
-
 const WindowComponent = ({
   panesData,
-  handleUpdateCommands,
-  layout,
+  handleUpdatePane,
 }: {
   panesData: LayoutContainer;
-  handleUpdateCommands: ChangeEventHandler;
-  layout: Layout;
+  handleUpdatePane: (pane: Pane) => void;
 }) => {
   const [panes, setPanes] = React.useState<JSX.Element>();
 
-  const createPanesLayout = useCallback(
-    (container: Pane | LayoutContainer) => {
-      const innerLayout: JSX.Element[] = [];
-      let containerId = 0;
+  const createPanesLayout = useCallback((container: Pane | LayoutContainer) => {
+    const innerLayout: JSX.Element[] = [];
+    let containerId = 0;
 
-      container.panes.forEach((pane: Pane | LayoutContainer) => {
-        console.log(pane);
-        if (pane?.orientation) {
-          innerLayout.push(createPanesLayout(pane));
-        } else {
-          innerLayout.push(
-            <PaneComponent
-              paneData={pane}
-              handleUpdateCommands={handleUpdateCommands}
-              key={`pane_${pane.xCoordinate}_${pane.yCoordinate}`}
-              id={`pane_${pane.xCoordinate}_${pane.yCoordinate}`}
-            />
-          );
-        }
-      });
+    container.panes.forEach((pane: Pane | LayoutContainer) => {
+      if (pane?.orientation) {
+        innerLayout.push(createPanesLayout(pane));
+      } else {
+        innerLayout.push(
+          <PaneComponent
+            paneData={pane}
+            handleUpdatePane={(pane) => handleUpdatePane(pane)}
+            key={`pane_${pane.xCoordinate}_${pane.yCoordinate}`}
+            id={`pane_${pane.xCoordinate}_${pane.yCoordinate}`}
+          />
+        );
+      }
+    });
 
-      containerId++;
+    containerId++;
 
-      return (
-        <div
-          className={`container_div`}
-          style={{ display: 'flex', flexDirection: container.orientation }}
-          id={`container_${containerId - 1}`}
-        >
-          {innerLayout}
-        </div>
-      );
-    },
-    [handleUpdateCommands]
-  );
+    return (
+      <div
+        className={styles.containerDiv}
+        style={{ display: 'flex', flexDirection: container.orientation }}
+        id={`container_${containerId - 1}`}
+      >
+        {innerLayout}
+      </div>
+    );
+  }, []);
 
   useEffect(() => {
-    const layout = createPanesLayout(panesData);
-
-    setPanes(layout);
+    setPanes(createPanesLayout(panesData));
   }, [createPanesLayout, panesData]);
 
   return (
