@@ -16,7 +16,7 @@ const WindowComponent = ({
   handleUpdatePane,
 }: {
   panesData: LayoutContainer;
-  handleUpdatePane: (pane: Pane) => void;
+  handleUpdatePane: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }) => {
   const [panes, setPanes] = React.useState<JSX.Element>();
 
@@ -31,7 +31,7 @@ const WindowComponent = ({
         innerLayout.push(
           <PaneComponent
             paneData={pane}
-            handleUpdatePane={(pane) => handleUpdatePane(pane)}
+            handleUpdatePane={handleUpdatePane}
             key={`pane_${pane.xCoordinate}_${pane.yCoordinate}`}
             id={`pane_${pane.xCoordinate}_${pane.yCoordinate}`}
           />

@@ -5,14 +5,14 @@ import { Window } from '../WindowComponent/Window.interface';
 
 const WindowButtonPad = ({
   buttonsData,
-  handleClick,
+  addNewWindow,
   handleRemoveWindow,
   handleRenameWindow,
   activeWindow,
 }: {
   buttonsData: Window[];
   activeWindow: number;
-  handleClick: MouseEventHandler;
+  addNewWindow: MouseEventHandler;
   handleRemoveWindow: MouseEventHandler;
   handleRenameWindow: ChangeEventHandler;
 }) => {
@@ -38,7 +38,7 @@ const WindowButtonPad = ({
       {buttons}
       <Button
         style={{ marginLeft: '5px' }}
-        onClick={handleClick}
+        onClick={addNewWindow}
         variant="contained"
       >
         Add new window

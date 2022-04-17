@@ -1,5 +1,10 @@
 import { TextField } from '@mui/material';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, {
+  ChangeEvent,
+  ChangeEventHandler,
+  useEffect,
+  useState,
+} from 'react';
 import { Pane } from './pane.interface';
 import styles from './PaneComponent.module.css';
 
@@ -8,30 +13,24 @@ const PaneComponent = ({
   handleUpdatePane,
 }: {
   paneData: Pane;
-  handleUpdatePane: (pane: Pane) => void;
+  handleUpdatePane: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }) => {
-  const [commands, setCommands] = useState(paneData.commands);
-
-  const handleChangeCommands = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setCommands(event.target.value);
-  };
+  const [pane, setPane] = useState<Pane>(paneData);
 
   useEffect(() => {
-    const pane = { ...paneData, commands: commands };
-    handleUpdatePane(pane);
-  }, [commands, handleUpdatePane, paneData]);
+    console.log('inside pane', paneData.commands);
+    setPane(paneData);
+  }, [paneData]);
 
   return (
     <div className={styles.root}>
       <div style={{ display: 'flex', height: '100%' }}>
         <TextField
-          id={`pane_${paneData.xCoordinate}_${paneData.yCoordinate}`}
+          id={`pane_${pane.xCoordinate}_${pane.yCoordinate}`}
           multiline
-          value={commands}
+          value={pane.commands}
           className={styles.commandInput}
-          onChange={handleChangeCommands}
+          onChange={handleUpdatePane}
           placeholder="Enter commands here..."
           style={{ width: '80%' }}
         ></TextField>

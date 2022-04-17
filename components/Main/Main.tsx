@@ -1,5 +1,12 @@
-import { Button, MenuItem, Paper, Select, TextField } from '@mui/material';
-import React, { useEffect } from 'react';
+import {
+  Button,
+  MenuItem,
+  Paper,
+  Select,
+  SelectChangeEvent,
+  TextField,
+} from '@mui/material';
+import React, { ChangeEvent, ChangeEventHandler, useEffect } from 'react';
 import { FC } from 'react';
 import ResultScript from '../ResultScript/ResultScript';
 import WindowButtonPad from '../WindowButtonPad/WindowButtonPad';
@@ -57,7 +64,9 @@ const Main: FC = () => {
       JSON.parse(getCookie('session'))
     : emptySession;
 
-  const [session, setSession] = React.useState(savedSession || emptySession);
+  const [session, setSession] = React.useState<Session>(
+    savedSession || emptySession
+  );
 
   const resetSession = () => {
     setSession(emptySession);
@@ -95,19 +104,26 @@ const Main: FC = () => {
     });
   };
 
-  const addNewWindow = () => {
+  const handleAddNewWindow = () => {
     const newWindow: Window = {
       ...initialWindow,
       id: session.windows.length,
+      name: `window ${session.windows.length}`,
     };
 
     session.windows.forEach(
       (window: Window, index: number) => (window.id = index)
     );
 
+    const updatedWindows = [...session.windows];
+    updatedWindows.push(newWindow);
+
+    console.log('adding new window');
+    console.log('updated windows length: ', updatedWindows.length);
+
     setSession({
       ...session,
-      windows: [...session.windows, newWindow],
+      windows: [...updatedWindows],
     });
 
     setActiveWindow(newWindow);
@@ -133,6 +149,8 @@ const Main: FC = () => {
       event.target.parentElement.parentElement.parentElement.id.split('_')[2]
     );
 
+    console.log('renaming window amount of windows:' + session.windows.length);
+
     setSession({
       ...session,
       windows: session.windows.map((window: Window, i: number) =>
@@ -143,19 +161,25 @@ const Main: FC = () => {
     setActiveWindow(session.windows[index]);
   };
 
-  const updatePane = (changedPane: Pane) => {
-    const paneX = changedPane.xCoordinate;
-    const paneY = changedPane.yCoordinate;
+  const updatePane = (event: ChangeEvent<Element>) => {
+    const paneId = event.target.id;
+    const paneX = parseInt(paneId.split('_')[1]);
+    const paneY = parseInt(paneId.split('_')[2]);
 
-    const updatedWindow = session.windows.map((window: Window) => {
+    console.log('before update Pane length: ', session.windows.length);
+    console.log('value: ', event.target.value);
+
+    const updatedWindows: Window[] = session.windows.map((window: Window) => {
       if (window.id === activeWindow.id) {
+        console.log('entering active window updating pane');
         window.containers.panes.forEach((pane: Pane | LayoutContainer) => {
           if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
-            pane.commands = changedPane.commands;
+            console.log('inside the pane');
+            pane.commands = event.target.value;
           } else if (pane?.orientation) {
             pane.panes.forEach((pane: Pane) => {
               if (pane.xCoordinate === paneX && pane.yCoordinate === paneY) {
-                pane.commands = changedPane.commands;
+                pane.commands = event.target.value;
               }
             });
           }
@@ -166,28 +190,30 @@ const Main: FC = () => {
       }
     });
 
+    console.log('updating pane');
+    console.log('updatedWindows length: ', updatedWindows.length);
+
     setSession({
       ...session,
-      windows: updatedWindow,
+      windows: [...updatedWindows],
     });
   };
 
-  const updateLayout = (event: any) => {
+  const updateLayout = (event: SelectChangeEvent<Layout>) => {
+    console.log('updating layout amount of windows', session.windows.length);
     const newWindows: Window[] = session.windows.map((window: Window) => {
       if (window.id === activeWindow.id) {
         window.layout = event.target.value;
-
         const containers = createPanes(window.layout);
         window.containers = containers;
-
         setActiveWindow(window);
-
         return window;
       } else {
         return window;
       }
     });
-
+    console.log('updating layout');
+    console.log('windows lenght in updateLayout', newWindows.length);
     setSession({
       ...session,
       windows: newWindows,
@@ -225,7 +251,7 @@ const Main: FC = () => {
           </div>
           <WindowButtonPad
             buttonsData={session.windows}
-            handleClick={addNewWindow}
+            addNewWindow={handleAddNewWindow}
             handleRemoveWindow={removeWindow}
             handleRenameWindow={renameWindow}
             activeWindow={activeWindow.id}
@@ -240,7 +266,7 @@ const Main: FC = () => {
       <div className={styles.creationContainer}>
         <WindowComponent
           panesData={activeWindow.containers}
-          handleUpdatePane={(pane) => updatePane(pane)}
+          handleUpdatePane={updatePane}
         />
         <ResultScript session={session} />
       </div>

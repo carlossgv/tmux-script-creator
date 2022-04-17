@@ -12,8 +12,6 @@ export const createPanes = (layout: Layout): LayoutContainer => {
     orientation: 'row',
   };
 
-  console.log('Called layout: ', layout);
-
   switch (layout) {
     case Layout.Pane1:
       containers = {
